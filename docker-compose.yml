@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8.0
+    restart: always
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: dom-soft
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  my-db:
