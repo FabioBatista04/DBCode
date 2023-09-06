@@ -91,7 +91,7 @@ public class LoginView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                new RegisterView().setVisible(true);  // Modificado para abrir a nova janela
+                new RegisterView(userController).setVisible(true);  // Modificado para abrir a nova janela
             }
         });
 
