@@ -16,14 +16,16 @@ public class UserController {
     private final UserRepository userRepository;
 
     public User create(User user){
+        var all = userRepository.findAll();
+        all.forEach(log::info);
         if( user.containsNullFields()){
             log.error("Algum dos dados estão incorretos");
         }
         log.info("user salvo com sucesso");
-        user.setProfile(Profile.ACCESS);
         return userRepository.save(user);
+    }
 
-
-
+    public boolean login(User user){
+        userRepository
     }
 }

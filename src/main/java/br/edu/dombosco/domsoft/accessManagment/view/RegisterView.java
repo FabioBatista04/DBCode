@@ -5,8 +5,6 @@ import br.edu.dombosco.domsoft.accessManagment.model.Profile;
 import br.edu.dombosco.domsoft.accessManagment.model.User;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.Arrays;
 
 public class RegisterView extends JFrame {
     private JLabel usernameLabel;
@@ -80,14 +78,17 @@ public class RegisterView extends JFrame {
             String userPassword = new String(password.getPassword());
             String userReplyPassword = new String(replyPassword.getPassword());
 
-            userController.create(User.builder()
+            var userCreated = userController.create(User.builder()
                     .username(username)
                     .email(emailAddress)
                     .password(userPassword)
                     .profile(profileSelected)
                     .build());
+            if(userCreated != null){
+                JOptionPane.showMessageDialog(this, "Registro efetuado com sucesso!");
+            }
 
-            JOptionPane.showMessageDialog(this, "Registro efetuado com sucesso!");
+
         });
 
 

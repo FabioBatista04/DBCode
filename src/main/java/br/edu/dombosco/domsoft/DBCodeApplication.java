@@ -7,12 +7,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javax.swing.*;
 
 @SpringBootApplication
-public class DomSoftApplication {
+public class DBCodeApplication {
 
 	public static void main(String[] args) {
 		System.setProperty("java.awt.headless", "false");
 		SwingUtilities.invokeLater(() -> {
-			var context = SpringApplication.run(DomSoftApplication.class, args);
+			var context = SpringApplication.run(DBCodeApplication.class, args);
 			LoginView loginView = context.getBean(LoginView.class);
 			loginView.setVisible(true);
 		});
