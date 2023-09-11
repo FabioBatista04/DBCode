@@ -68,14 +68,22 @@ public class LoginView extends JFrame {
         btnEntrar.setBounds(100, 110, 150, 25);
         add(btnEntrar);
 
-        btnEntrar.addActionListener(e -> {
-            String usuario = txtUsuario.getText();
-            String senha = new String(txtSenha.getPassword());
+        btnEntrar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                String usuario = txtUsuario.getText();
+                String senha = new String(txtSenha.getPassword());
 
-            userController.create(User.builder()
-                            .username(usuario)
-                            .password(senha)
-                    .build());
+                var login = userController.login(User.builder().username(usuario).password(senha).build());
+                if(login){
+                    setVisible(false);
+                    new HomeView().setVisible(true);
+                }else {
+                    JOptionPane.showMessageDialog(LoginView.this, "Confirme seus dados.");
+
+                }
+            }
         });
 
         lblEsqueciSenha.addMouseListener(new MouseAdapter() {

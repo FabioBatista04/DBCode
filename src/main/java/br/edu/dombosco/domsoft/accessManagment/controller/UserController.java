@@ -26,6 +26,7 @@ public class UserController {
     }
 
     public boolean login(User user){
-        userRepository
+       var userDataBase = userRepository.findUserByUsername(user.getUsername());
+       return userDataBase != null;
     }
 }
