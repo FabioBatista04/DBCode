@@ -1,10 +1,8 @@
-package br.edu.dombosco.domsoft.accessManagment.controller;
+package br.edu.dombosco.dbcode.accessManagment.controller;
 
-import br.edu.dombosco.domsoft.accessManagment.model.Profile;
-import br.edu.dombosco.domsoft.accessManagment.model.User;
-import br.edu.dombosco.domsoft.accessManagment.repository.UserRepository;
+import br.edu.dombosco.dbcode.accessManagment.model.User;
+import br.edu.dombosco.dbcode.accessManagment.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 

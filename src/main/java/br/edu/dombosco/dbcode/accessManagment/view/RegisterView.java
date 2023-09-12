@@ -1,10 +1,12 @@
-package br.edu.dombosco.domsoft.accessManagment.view;
+package br.edu.dombosco.dbcode.accessManagment.view;
 
-import br.edu.dombosco.domsoft.accessManagment.controller.UserController;
-import br.edu.dombosco.domsoft.accessManagment.model.Profile;
-import br.edu.dombosco.domsoft.accessManagment.model.User;
+import br.edu.dombosco.dbcode.accessManagment.model.Profile;
+import br.edu.dombosco.dbcode.accessManagment.model.User;
+import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
 
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class RegisterView extends JFrame {
     private JLabel usernameLabel;
@@ -86,9 +88,9 @@ public class RegisterView extends JFrame {
                     .build());
             if(userCreated != null){
                 JOptionPane.showMessageDialog(this, "Registro efetuado com sucesso!");
+                setVisible(false);
+                new LoginView(userController).setVisible(true);
             }
-
-
         });
 
 

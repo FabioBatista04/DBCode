@@ -1,4 +1,4 @@
-package br.edu.dombosco.domsoft.accessManagment.view;
+package br.edu.dombosco.dbcode.accessManagment.view;
 
 import javax.swing.*;
 import java.awt.*;

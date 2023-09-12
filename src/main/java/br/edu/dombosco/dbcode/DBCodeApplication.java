@@ -1,6 +1,6 @@
-package br.edu.dombosco.domsoft;
+package br.edu.dombosco.dbcode;
 
-import br.edu.dombosco.domsoft.accessManagment.view.LoginView;
+import br.edu.dombosco.dbcode.accessManagment.view.LoginView;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

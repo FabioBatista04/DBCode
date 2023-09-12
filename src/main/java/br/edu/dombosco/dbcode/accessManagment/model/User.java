@@ -1,4 +1,4 @@
-package br.edu.dombosco.domsoft.accessManagment.model;
+package br.edu.dombosco.dbcode.accessManagment.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

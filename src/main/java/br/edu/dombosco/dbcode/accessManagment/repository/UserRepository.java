@@ -1,6 +1,6 @@
-package br.edu.dombosco.domsoft.accessManagment.repository;
+package br.edu.dombosco.dbcode.accessManagment.repository;
 
-import br.edu.dombosco.domsoft.accessManagment.model.User;
+import br.edu.dombosco.dbcode.accessManagment.model.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

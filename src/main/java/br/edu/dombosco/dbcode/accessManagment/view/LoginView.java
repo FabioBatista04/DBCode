@@ -1,12 +1,10 @@
-package br.edu.dombosco.domsoft.accessManagment.view;
+package br.edu.dombosco.dbcode.accessManagment.view;
 
-import br.edu.dombosco.domsoft.accessManagment.controller.UserController;
-import br.edu.dombosco.domsoft.accessManagment.model.User;
-import lombok.AllArgsConstructor;
+import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
+import br.edu.dombosco.dbcode.accessManagment.model.User;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
 import java.awt.*;
