@@ -1,32 +1,65 @@
 package br.edu.dombosco.dbcode.accessManagment.view;
 
+import br.edu.dombosco.dbcode.accessManagment.controller.EmailController;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+@Lazy
+@Component
+@Scope("prototype")
 public class ResetPasswordView extends JFrame {
+    private JTextField emailField;
+    private JTextField codeField;
+    private JButton sendCodeButton;
+    private JButton verifyCodeButton;
+    private final EmailController emailController;
 
-        public ResetPasswordView() {
-            setTitle("Redefinição de Senha");
-            setSize(400, 200);
-            setLocationRelativeTo(null);
-            setLayout(new BorderLayout());
+    public ResetPasswordView(EmailController emailController) {
+        this.emailController = emailController;
 
-            JLabel instructionLabel = new JLabel("Digite seu e-mail para redefinir sua senha:");
-            JTextField emailField = new JTextField();
-            JButton sendButton = new JButton("Enviar");
+        setTitle("Password Reset");
+        setSize(300, 200);
+        setLayout(new FlowLayout());
 
-            sendButton.addActionListener(e -> {
-                String email = emailField.getText();
-                // Implemente a lógica para enviar o email aqui
-                // ...
-                JOptionPane.showMessageDialog(this, "E-mail enviado!");
-            });
+        emailField = new JTextField(20);
+        codeField = new JTextField(20);
+        sendCodeButton = new JButton("Enviar");
+        verifyCodeButton = new JButton("Verificar Código");
 
-            add(instructionLabel, BorderLayout.NORTH);
-            add(emailField, BorderLayout.CENTER);
-            add(sendButton, BorderLayout.SOUTH);
+        add(new JLabel("Email:"));
+        add(emailField);
+        add(sendCodeButton);
+        add(new JLabel("Code:"));
+        add(codeField);
+        add(verifyCodeButton);
 
-            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        sendCodeButton.addActionListener(new SendCodeAction());
+        verifyCodeButton.addActionListener(new VerifyCodeAction());
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private class SendCodeAction implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String email = emailField.getText();
+            emailController.sendEmailToResetPassword(email);
         }
     }
 
+    private class VerifyCodeAction implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String email = emailField.getText();
+            String code = codeField.getText();
+            // ... Lógica para verificar o código no backend
+        }
+    }
+
+}

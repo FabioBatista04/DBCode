@@ -13,15 +13,17 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
   mail:
-    host:
-    port:
-    username:
-    password: "DBCode@2023"
+    host: smtp.outlook.com
+    port: 587
+    username: dbcode2023@outlook.com
+    password: DBCode@2023
+    protocol: smtp
     properties:
-      smtp:
-        auth: true
-        starttls:
-          enable: true
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 
 server:

@@ -1,5 +1,6 @@
 package br.edu.dombosco.dbcode.accessManagment.view;
 
+import br.edu.dombosco.dbcode.accessManagment.controller.EmailController;
 import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
 import br.edu.dombosco.dbcode.accessManagment.model.User;
 import org.springframework.context.annotation.Lazy;
@@ -20,14 +21,16 @@ public class LoginView extends JFrame {
     private JLabel lblCadastreSe;
     private JButton btnEntrar;
 
-    private  UserController userController;
+    private UserController userController;
+    private EmailController emailController;
 
 
-
-    public LoginView(UserController userController) {
+    public LoginView(UserController userController, EmailController emailController) {
         this.userController = userController;
+        this.emailController = emailController;
+
         setTitle("Tela de Login");
-        setSize(280, 300);
+        setSize(800, 600);
         setLocationRelativeTo(null);
         setLayout(null);
 
@@ -88,7 +91,7 @@ public class LoginView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                new ResetPasswordView().setVisible(true);  // Modificado para abrir a nova janela
+                new ResetPasswordView(emailController).setVisible(true);
 
             }
         });
@@ -97,7 +100,7 @@ public class LoginView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                new RegisterView(userController).setVisible(true);  // Modificado para abrir a nova janela
+                new RegisterView(userController, emailController).setVisible(true);
             }
         });
 

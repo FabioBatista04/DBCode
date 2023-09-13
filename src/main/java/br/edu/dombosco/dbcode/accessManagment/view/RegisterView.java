@@ -1,5 +1,6 @@
 package br.edu.dombosco.dbcode.accessManagment.view;
 
+import br.edu.dombosco.dbcode.accessManagment.controller.EmailController;
 import br.edu.dombosco.dbcode.accessManagment.model.Profile;
 import br.edu.dombosco.dbcode.accessManagment.model.User;
 import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
@@ -30,9 +31,11 @@ public class RegisterView extends JFrame {
     int comprimentoTexto = 170;
     int distanciaTexto = comprimentoTexto - 15;
     private UserController userController;
+    private EmailController emailController;
 
-    public RegisterView(UserController userController) {
+    public RegisterView(UserController userController, EmailController emailController) {
         this.userController = userController;
+        this.emailController = emailController;
 
         initializeComponents();
         setupListeners();
@@ -89,7 +92,7 @@ public class RegisterView extends JFrame {
             if(userCreated != null){
                 JOptionPane.showMessageDialog(this, "Registro efetuado com sucesso!");
                 setVisible(false);
-                new LoginView(userController).setVisible(true);
+                new LoginView(userController, emailController).setVisible(true);
             }
         });
 
@@ -100,7 +103,7 @@ public class RegisterView extends JFrame {
 
     private void initializeComponents() {
         setTitle("Cadastro");
-        setSize(500, 300);
+        setSize(800, 600);
         setLocationRelativeTo(null);
         //setLayout(new GridLayout(3, 2));
         setLayout(null);
