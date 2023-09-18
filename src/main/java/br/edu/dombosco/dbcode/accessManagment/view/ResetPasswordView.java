@@ -10,9 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-@Lazy
-@Component
-@Scope("prototype")
+
 public class ResetPasswordView extends JFrame {
     private JTextField emailField;
     private JTextField codeField;

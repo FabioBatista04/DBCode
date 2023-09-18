@@ -11,9 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-@Lazy
-@Component
-@Scope("prototype")
+
 public class LoginView extends JFrame {
     private JTextField txtUsuario;
     private JPasswordField txtSenha;
