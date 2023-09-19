@@ -28,7 +28,7 @@ public class LoginView extends JFrame {
         this.emailController = emailController;
 
         setTitle("Tela de Login");
-        setSize(800, 600);
+        setSize(300, 350);
         setLocationRelativeTo(null);
         setLayout(null);
 

@@ -36,7 +36,7 @@ public class RegisterView extends JFrame {
     public RegisterView(UserController userController, EmailController emailController) {
         this.userController = userController;
         this.emailController = emailController;
-
+        setLocationRelativeTo(null);
         initializeComponents();
         setupListeners();
 
