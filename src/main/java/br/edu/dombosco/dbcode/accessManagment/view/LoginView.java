@@ -1,20 +1,17 @@
-package br.edu.dombosco.domsoft.accessManagment.view;
+package br.edu.dombosco.dbcode.accessManagment.view;
 
-import br.edu.dombosco.domsoft.accessManagment.controller.UserController;
-import br.edu.dombosco.domsoft.accessManagment.model.User;
-import lombok.AllArgsConstructor;
+import br.edu.dombosco.dbcode.accessManagment.controller.EmailController;
+import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
+import br.edu.dombosco.dbcode.accessManagment.model.User;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-@Lazy
-@Component
-@Scope("prototype")
+
 public class LoginView extends JFrame {
     private JTextField txtUsuario;
     private JPasswordField txtSenha;
@@ -22,14 +19,16 @@ public class LoginView extends JFrame {
     private JLabel lblCadastreSe;
     private JButton btnEntrar;
 
-    private  UserController userController;
+    private UserController userController;
+    private EmailController emailController;
 
 
-
-    public LoginView(UserController userController) {
+    public LoginView(UserController userController, EmailController emailController) {
         this.userController = userController;
+        this.emailController = emailController;
+
         setTitle("Tela de Login");
-        setSize(280, 300);
+        setSize(800, 600);
         setLocationRelativeTo(null);
         setLayout(null);
 
@@ -68,21 +67,29 @@ public class LoginView extends JFrame {
         btnEntrar.setBounds(100, 110, 150, 25);
         add(btnEntrar);
 
-        btnEntrar.addActionListener(e -> {
-            String usuario = txtUsuario.getText();
-            String senha = new String(txtSenha.getPassword());
+        btnEntrar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                String usuario = txtUsuario.getText();
+                String senha = new String(txtSenha.getPassword());
 
-            userController.create(User.builder()
-                            .username(usuario)
-                            .password(senha)
-                    .build());
+                var login = userController.login(User.builder().username(usuario).password(senha).build());
+                if(login){
+                    setVisible(false);
+                    new HomeView().setVisible(true);
+                }else {
+                    JOptionPane.showMessageDialog(LoginView.this, "Confirme seus dados.");
+
+                }
+            }
         });
 
         lblEsqueciSenha.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                new ResetPasswordView().setVisible(true);  // Modificado para abrir a nova janela
+                new ResetPasswordView(emailController).setVisible(true);
 
             }
         });
@@ -91,7 +98,7 @@ public class LoginView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                new RegisterView().setVisible(true);  // Modificado para abrir a nova janela
+                new RegisterView(userController, emailController).setVisible(true);
             }
         });
 

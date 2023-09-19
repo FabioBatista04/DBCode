@@ -8,10 +8,10 @@ LABEL description="Aplicação Java"
 WORKDIR /usr/app
 
 # Copie o JAR da sua aplicação para o diretório de trabalho no contêiner
-COPY ./build/libs/dom-soft-0.0.1-SNAPSHOT.jar /usr/app/
+COPY ./build/libs/DBCode-0.0.1-SNAPSHOT.jar /usr/app/
 
 # Exponha a porta que sua aplicação utilizará (altere para a porta correta da sua aplicação, se necessário)
 EXPOSE 8080
 
 # Defina o comando padrão para executar sua aplicação
-CMD ["java", "-jar", "dom-soft-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "DBCode-0.0.1-SNAPSHOT.jar"]
