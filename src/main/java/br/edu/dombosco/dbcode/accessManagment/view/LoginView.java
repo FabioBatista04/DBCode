@@ -3,9 +3,6 @@ package br.edu.dombosco.dbcode.accessManagment.view;
 import br.edu.dombosco.dbcode.accessManagment.controller.EmailController;
 import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
 import br.edu.dombosco.dbcode.accessManagment.model.User;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
@@ -89,7 +86,7 @@ public class LoginView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                new ResetPasswordView(emailController).setVisible(true);
+                new SendCodeEmailValidateView(emailController).setVisible(true);
 
             }
         });

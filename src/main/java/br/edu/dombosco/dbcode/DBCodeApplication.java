@@ -2,11 +2,8 @@ package br.edu.dombosco.dbcode;
 
 import br.edu.dombosco.dbcode.accessManagment.controller.EmailController;
 import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
-import br.edu.dombosco.dbcode.accessManagment.view.LoginView;
-import br.edu.dombosco.dbcode.accessManagment.view.RegisterView;
-import br.edu.dombosco.dbcode.accessManagment.view.ResetPasswordView;
+import br.edu.dombosco.dbcode.accessManagment.view.SendCodeEmailValidateView;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +17,7 @@ public class DBCodeApplication {
 	}
 	@Bean
 	CommandLineRunner runner(UserController userController, EmailController emailController) {
-		return args -> SwingUtilities.invokeLater(() -> new ResetPasswordView(emailController ));
+		return args -> SwingUtilities.invokeLater(() -> new SendCodeEmailValidateView(emailController ));
 	}
 
 }
