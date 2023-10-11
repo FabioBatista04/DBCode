@@ -1,5 +1,7 @@
 package br.edu.dombosco.dbcode.accessManagment.controller;
 
+import br.edu.dombosco.dbcode.accessManagment.model.User;
+import br.edu.dombosco.dbcode.accessManagment.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.mail.SimpleMailMessage;
@@ -11,9 +13,14 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class EmailController {
     private JavaMailSender mailSender;
+    private UserRepository userRepository;
 
-    public void sendEmailToResetPassword(String emailAddress){
+    public User sendEmailToResetPassword(String emailAddress){
+        var code = 123;
+        var user = userRepository.findUserByEmail(emailAddress);
+        if ( user == null ) return null;
         SimpleMailMessage message = new SimpleMailMessage();
+
         message.setFrom("dbcode2023@outlook.com");
         message.setTo(emailAddress);
         message.setSubject("Redefinição de Senha");

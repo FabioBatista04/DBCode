@@ -1,24 +1,22 @@
 package br.edu.dombosco.dbcode.accessManagment.view;
 
 import br.edu.dombosco.dbcode.accessManagment.controller.EmailController;
-import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class ResetPasswordView extends JFrame {
-    private JTextField txtEmail;
-    private JLabel labelEmail;
+public class ConfirmEmailView extends JFrame {
+
     private JTextField textCode;
     private JLabel labelCode;
     private JButton sendCodeButton;
     private JButton verifyCodeButton;
-    private final UserController userController;
+    private final EmailController emailController;
 
-    public ResetPasswordView(UserController emailController) {
-        this.userController = emailController;
+    public ConfirmEmailView(EmailController emailController) {
+        this.emailController = emailController;
         setVisible(true);
         setTitle("Password Reset");
         setSize(300, 350);
@@ -34,28 +32,36 @@ public class ResetPasswordView extends JFrame {
         textCode.setColumns(10);
         add(textCode);
 
+
+
+
         verifyCodeButton = new JButton("Verificar Código");
+        verifyCodeButton.setBounds(40,220,50,50);
+        add(verifyCodeButton);
+        add(new JLabel("Code:"));
+        //add(codeField);
+        add(verifyCodeButton);
+
+        sendCodeButton.addActionListener(new SendCodeAction());
         verifyCodeButton.addActionListener(new VerifyCodeAction());
 
-//
-//        add(txtEmail);
-//        add(sendCodeButton);
-//        add(new JLabel("Code:"));
-//        add(codeField);
-//        add(verifyCodeButton);
-//
-//        sendCodeButton.addActionListener(new SendCodeAction());
-//
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private class SendCodeAction implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+           // String email = emailField.getText();
+           // emailController.sendEmailToResetPassword(email);
+        }
     }
 
     private class VerifyCodeAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String code = textCode.getText();
-            userController.verifyCode(code);
-
+          //  String email = emailField.getText();
+            //String code = codeField.getText();
+            // ... Lógica para verificar o código no backend
         }
     }
 

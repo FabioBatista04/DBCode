@@ -27,4 +27,9 @@ public class UserController {
        var userDataBase = userRepository.findUserByUsername(user.getUsername());
        return userDataBase != null;
     }
+
+    public void verifyCode(String code) {
+        //receber email ou receber usuário para encontrar user
+
+    }
 }
