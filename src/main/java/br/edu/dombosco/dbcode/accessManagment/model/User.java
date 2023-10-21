@@ -29,6 +29,8 @@ public class User {
     private String password;
     @Column(name = "PROFILE", nullable = false)
     private Profile profile;
+    @Column(name = "RESET_CODE")
+    private String resetCode;
 
 
 
