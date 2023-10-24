@@ -2,10 +2,12 @@ package br.edu.dombosco.dbcode.accessManagment.controller;
 
 import br.edu.dombosco.dbcode.accessManagment.model.User;
 import br.edu.dombosco.dbcode.accessManagment.repository.UserRepository;
+import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -18,19 +20,26 @@ public class EmailController {
     private UserRepository userRepository;
 
     public User sendEmailToResetPassword(String emailAddress){
-        SimpleMailMessage message = new SimpleMailMessage();
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+
         var user = userRepository.findUserByEmail(emailAddress);
-        if ( user == null ) return null;
+        if (user == null) return null;
+
         String code = generateCode();
         user.setResetCode(code);
         userRepository.save(user);
 
-        message.setFrom("dbcode2023@outlook.com");
-        message.setTo(emailAddress);
-        message.setSubject("Redefinição de Senha");
-        message.setText("Olá! \nSegue código de redefinição de senha:\n   " + code + "     \n\n\n\nOBS: Caso não tenha sido você que solicitou, desconsidere esse email. ");
+        String htmlMsg = "<html><body style='font-size:16px;'>Olá! <br>Segue código de redefinição de senha:<br><br><br><b>" + code + "</b><br><br><br>OBS: Caso não tenha sido você que solicitou, desconsidere esse email.</body></html>";
+
         try {
-            mailSender.send(message);
+            helper.setFrom("dbcode2023@outlook.com");
+            helper.setTo(emailAddress);
+            helper.setSubject("Redefinição de Senha");
+            helper.setText(htmlMsg, true);  // true indica que o conteúdo é HTML
+
+            mailSender.send(mimeMessage);
+
             return user;
         } catch (Exception e){
             log.error("Error to send email { }", e);

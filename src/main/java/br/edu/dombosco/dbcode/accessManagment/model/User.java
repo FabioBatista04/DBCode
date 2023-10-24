@@ -11,6 +11,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @Builder
@@ -31,6 +33,7 @@ public class User {
     private Profile profile;
     @Column(name = "RESET_CODE")
     private String resetCode;
+    private List<String> fields;
 
 
 

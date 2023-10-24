@@ -7,6 +7,7 @@ import br.edu.dombosco.dbcode.accessManagment.model.User;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 
 public class LoginView extends JFrame {
@@ -71,12 +72,13 @@ public class LoginView extends JFrame {
                 String usuario = txtUsuario.getText();
                 String senha = new String(txtSenha.getPassword());
 
-                var login = userController.login(User.builder().username(usuario).password(senha).build());
-                if(login){
+                var user = userController.login(User.builder().username(usuario).password(senha).fields(new ArrayList<>()).build());
+                if(user.getFields().isEmpty()){
                     setVisible(false);
                     new HomeView().setVisible(true);
                 }else {
-                    JOptionPane.showMessageDialog(LoginView.this, "Confirme seus dados.");
+                    String mensagem = "Por favor, verifique os seguintes campos: " + String.join(", ", user.getFields());
+                    JOptionPane.showMessageDialog(LoginView.this, mensagem,"Valide Campos",JOptionPane.WARNING_MESSAGE);
 
                 }
             }

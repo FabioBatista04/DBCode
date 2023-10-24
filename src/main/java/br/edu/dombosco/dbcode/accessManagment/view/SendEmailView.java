@@ -34,7 +34,6 @@ public class SendEmailView extends JFrame {
 
         sendCodeButton = new JButton("Enviar");
         sendCodeButton.setBounds(80,60,90,60);
-        sendCodeButton.addActionListener(new SendCodeAction());
         add(sendCodeButton);
 
         sendCodeButton.addMouseListener(new MouseAdapter() {
@@ -42,22 +41,25 @@ public class SendEmailView extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 String email = txtEmail.getText();
-                //emailController.sendEmailToResetPassword(email);
-                setVisible(false);
-                new ConfirmEmailView(emailController).setVisible(true);
+                if(email == null || email.isEmpty()){
+                    JOptionPane.showMessageDialog(SendEmailView.this, "Email vazio","Valide Campos",JOptionPane.WARNING_MESSAGE);
+                }else {
+                    var user = emailController.sendEmailToResetPassword(email);
+                    if (user == null){
+                        JOptionPane.showMessageDialog(SendEmailView.this, "Email não encontrado","Valide Campos",JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        setVisible(false);
+                        new ConfirmEmailView(emailController, user).setVisible(true);
+                    }
+
+                }
+
+
             }
         });
 
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-
-    private class SendCodeAction implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-           String email = txtEmail.getText();
-           emailController.sendEmailToResetPassword(email);
-        }
     }
 
 }

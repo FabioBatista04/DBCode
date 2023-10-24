@@ -8,6 +8,9 @@ import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class RegisterView extends JFrame {
     private JLabel usernameLabel;
@@ -82,17 +85,25 @@ public class RegisterView extends JFrame {
             String emailAddress = email.getText();
             String userPassword = new String(password.getPassword());
             String userReplyPassword = new String(replyPassword.getPassword());
+            if(userPassword.isEmpty() || userReplyPassword.isEmpty() || !userPassword.equals(userReplyPassword)){
+                JOptionPane.showMessageDialog(RegisterView.this, "Senhas não conferem","Valide Campos",JOptionPane.WARNING_MESSAGE);
+            }
 
             var userCreated = userController.create(User.builder()
                     .username(username)
                     .email(emailAddress)
                     .password(userPassword)
                     .profile(profileSelected)
+                    .fields(new ArrayList<>())
                     .build());
-            if(userCreated != null){
+            if(userCreated.getFields().isEmpty()){
                 JOptionPane.showMessageDialog(this, "Registro efetuado com sucesso!");
                 setVisible(false);
                 new LoginView(userController, emailController).setVisible(true);
+            }else {
+                String mensagem = "Por favor, verifique os seguintes campos: " + String.join(", ", userCreated.getFields());
+                JOptionPane.showMessageDialog(RegisterView.this, mensagem,"Valide Campos",JOptionPane.WARNING_MESSAGE);
+
             }
         });
 
