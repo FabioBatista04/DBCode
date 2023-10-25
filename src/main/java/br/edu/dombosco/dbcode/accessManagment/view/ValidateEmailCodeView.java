@@ -1,51 +1,49 @@
 package br.edu.dombosco.dbcode.accessManagment.view;
 
 import br.edu.dombosco.dbcode.accessManagment.controller.EmailController;
-import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class ResetPasswordView extends JFrame {
-    private JTextField txtEmail;
-    private JLabel labelEmail;
-    private JTextField textCode;
+public class ValidateEmailCodeView extends JFrame {
     private JLabel labelCode;
-    private JButton sendCodeButton;
+    private JTextField textCode;
     private JButton verifyCodeButton;
-    private final UserController userController;
+    private final EmailController emailController;
 
-    public ResetPasswordView(UserController emailController) {
-        this.userController = emailController;
+    public ValidateEmailCodeView(EmailController emailController) {
+        this.emailController = emailController;
         setVisible(true);
-        setTitle("Password Reset");
+        setTitle("Valid Code");
         setSize(300, 350);
         setLocationRelativeTo(null);
         setLayout(null);
 
-        labelCode = new JLabel("Código de Verificação:");
-        labelCode.setBounds(10,60,180,25);
+        labelCode = new JLabel("Código:");
+        labelCode.setBounds(10,40,60,25);
         add(labelCode);
 
         textCode = new JTextField();
-        textCode.setBounds(60, 80, 100, 60);
-        textCode.setColumns(10);
+        textCode.setBounds(60, 40, 200, 25);
         add(textCode);
 
-        verifyCodeButton = new JButton("Verificar Código");
-        verifyCodeButton.addActionListener(new VerifyCodeAction());
 
-//
+
+//        codeField = new JTextField(20);
+//        sendCodeButton = new JButton("Enviar");
+//        sendCodeButton.setBounds(90,80,80,40);
+        verifyCodeButton = new JButton("Verificar Código");
+        verifyCodeButton.setBounds(90,80,80,40);
 //        add(txtEmail);
 //        add(sendCodeButton);
 //        add(new JLabel("Code:"));
 //        add(codeField);
-//        add(verifyCodeButton);
+        add(verifyCodeButton);
 //
 //        sendCodeButton.addActionListener(new SendCodeAction());
-//
+//        verifyCodeButton.addActionListener(new VerifyCodeAction());
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -54,7 +52,7 @@ public class ResetPasswordView extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             String code = textCode.getText();
-            userController.verifyCode(code);
+
 
         }
     }

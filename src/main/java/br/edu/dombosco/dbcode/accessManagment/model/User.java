@@ -6,10 +6,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -29,6 +33,10 @@ public class User {
     private String password;
     @Column(name = "PROFILE", nullable = false)
     private Profile profile;
+    @Column(name = "RESET_CODE")
+    private String resetCode;
+    @Transient
+    private List<String> fields = new ArrayList<>() ;
 
 
 
