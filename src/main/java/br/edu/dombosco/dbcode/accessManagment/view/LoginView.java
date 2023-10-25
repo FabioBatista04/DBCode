@@ -88,7 +88,7 @@ public class LoginView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                new SendEmailView(emailController).setVisible(true);
+                new SendEmailView(userController, emailController).setVisible(true);
 
             }
         });

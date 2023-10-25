@@ -1,6 +1,7 @@
 package br.edu.dombosco.dbcode.accessManagment.view;
 
 import br.edu.dombosco.dbcode.accessManagment.controller.EmailController;
+import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
 import br.edu.dombosco.dbcode.accessManagment.model.User;
 
 import javax.swing.*;
@@ -15,9 +16,11 @@ public class SendEmailView extends JFrame {
     private JLabel labelEmail;
     private JButton sendCodeButton;
     private final EmailController emailController;
+    private final UserController userController;
 
-    public SendEmailView(EmailController emailController) {
+    public SendEmailView(UserController userController, EmailController emailController) {
         this.emailController = emailController;
+        this.userController = userController;
         setVisible(true);
         setTitle("Password Reset");
         setSize(300, 350);
@@ -49,7 +52,7 @@ public class SendEmailView extends JFrame {
                         JOptionPane.showMessageDialog(SendEmailView.this, "Email não encontrado","Valide Campos",JOptionPane.WARNING_MESSAGE);
                     } else {
                         setVisible(false);
-                        new ConfirmEmailView(emailController, user).setVisible(true);
+                        new ConfirmEmailView(userController, emailController, user).setVisible(true);
                     }
 
                 }

@@ -24,7 +24,11 @@ public class EmailController {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 
         var user = userRepository.findUserByEmail(emailAddress);
-        if (user == null) return null;
+        if (user == null){
+            log.info("Usuario não encontrado na base de dados");
+            return null;
+        }
+
 
         String code = generateCode();
         user.setResetCode(code);

@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 @Log4j2
@@ -77,9 +75,27 @@ public class UserController {
         if(user.getPassword().isEmpty())
             user.getFields().add("Senha");
     }
+    public User changePassword(User user){
+        if(user == null) return null;
+        var userDb = userRepository.findUserByUsername(user.getUsername());
+        if(user.getPassword() == null || user.getPassword().isEmpty()) return null;
+        userDb.setPassword(user.getPassword());
+        return userRepository.save(userDb);
+    }
+
+
 
     public void verifyCode(String code) {
         //receber email ou receber usuário para encontrar user
 
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    public User update(User user) {
+        if(user == null) return null;
+        return userRepository.save(user);
     }
 }
