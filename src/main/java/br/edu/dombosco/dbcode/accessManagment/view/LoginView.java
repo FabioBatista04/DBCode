@@ -1,5 +1,6 @@
 package br.edu.dombosco.dbcode.accessManagment.view;
 
+import br.edu.dombosco.dbcode.accessManagment.adapter.GenericFocusAdapter;
 import br.edu.dombosco.dbcode.accessManagment.controller.EmailController;
 import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
 import br.edu.dombosco.dbcode.accessManagment.model.User;
@@ -11,11 +12,22 @@ import java.util.ArrayList;
 
 
 public class LoginView extends JFrame {
-    private JTextField txtUsuario;
-    private JPasswordField txtSenha;
-    private JLabel lblEsqueciSenha;
-    private JLabel lblCadastreSe;
-    private JButton btnEntrar;
+
+    private JPanel panel;
+
+    private JTextField username;
+    private JPasswordField password;
+    private JLabel forgetPassword;
+    private JLabel singUp;
+    private JButton login;
+
+    private Color color;
+
+    private GenericFocusAdapter focus = new GenericFocusAdapter();
+
+    private ImageIcon imageIcon;
+
+    private JLabel image;
 
     private UserController userController;
     private EmailController emailController;
@@ -25,52 +37,68 @@ public class LoginView extends JFrame {
         this.userController = userController;
         this.emailController = emailController;
 
-        setTitle("Tela de Login");
-        setSize(300, 350);
-        setLocationRelativeTo(null);
-        setLayout(null);
+        initComponents();
+        setLayoutLogin();
+        setUpListeners();
 
-        JLabel lblUsuario = new JLabel("Usuario:");
-        lblUsuario.setBounds(10, 10, 60, 25);
-        add(lblUsuario);
+        username.setBounds(340, 130, 180, 30);
+        username.setForeground(color);
+        username.addFocusListener(focus);
+        username.putClientProperty("defaultText","Digite seu usuário");
+        panel.add(username);
 
-        txtUsuario = new JTextField();
-        txtUsuario.setBounds(100, 10, 150, 25);
-        add(txtUsuario);
+        password.setForeground(color);
+        password.setEchoChar((char) 0);
+        password.putClientProperty("defaultText","Digite sua senha");
+        password.addFocusListener(focus);
+        panel.add(password);
+        password.setBounds(340, 210, 180, 30);
 
-        JLabel lblSenha = new JLabel("Senha:");
-        lblSenha.setBounds(10, 70, 60, 25);
-        add(lblSenha);
+        forgetPassword.setForeground(new java.awt.Color(204, 204, 204));
+        forgetPassword.setText("Esqueci minha senha");
+        panel.add(forgetPassword);
+        forgetPassword.setBounds(340, 480, 130, 16);
+        forgetPassword.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        txtSenha = new JPasswordField();
-        txtSenha.setBounds(100, 70, 150, 25);
-        add(txtSenha);
+        singUp.setForeground(new java.awt.Color(204, 204, 204));
+        singUp.setText("Cadastre-se");
+        panel.add(singUp);
+        singUp.setBounds(340, 440, 70, 16);
+        singUp.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        image.setIcon(imageIcon);
+        panel.add(image);
+        image.setBounds(0, 0, 600, 650);
+
+        login.setBounds(380, 340, 72, 23);
+        panel.add(login);
+
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(panel, GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(panel, GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
+        );
 
 
-        lblEsqueciSenha = new JLabel("Esqueci minha senha");
-        lblEsqueciSenha.setBounds(10, 140, 150, 25);
-        lblEsqueciSenha.setForeground(Color.BLUE);
-        lblEsqueciSenha.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        add(lblEsqueciSenha);
-
-        lblCadastreSe = new JLabel("Cadastre-se");
-        lblCadastreSe.setBounds(10, 170, 150, 25);
-        lblCadastreSe.setForeground(Color.BLUE);
-        lblCadastreSe.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        add(lblCadastreSe);
 
 
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+    }
 
-        btnEntrar = new JButton("Entrar");
-        btnEntrar.setBounds(100, 110, 150, 25);
-        add(btnEntrar);
+    private void setUpListeners() {
 
-        btnEntrar.addMouseListener(new MouseAdapter() {
+        login.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                String usuario = txtUsuario.getText();
-                String senha = new String(txtSenha.getPassword());
+                String usuario = username.getText();
+                String senha = new String(password.getPassword());
 
                 var user = userController.login(User.builder().username(usuario).password(senha).fields(new ArrayList<>()).build());
                 if(user.getFields().isEmpty()){
@@ -84,7 +112,7 @@ public class LoginView extends JFrame {
             }
         });
 
-        lblEsqueciSenha.addMouseListener(new MouseAdapter() {
+        forgetPassword.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
@@ -93,15 +121,41 @@ public class LoginView extends JFrame {
             }
         });
 
-        lblCadastreSe.addMouseListener(new MouseAdapter() {
+        singUp.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
                 new RegisterView(userController, emailController).setVisible(true);
             }
         });
+    }
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+    private void initComponents() {
+        panel = new JPanel();
+        username = new JTextField("Digite seu usuário");
+        login = new JButton("Entrar");
+        password = new JPasswordField("Digite sua senha");
+        singUp = new JLabel("Cadastre-se");
+        forgetPassword = new JLabel("Esqueci minha senha");
+        color = new Color(153, 153, 153);
+        imageIcon = new ImageIcon("src/main/java/br/edu/dombosco/dbcode/accessManagment/view/image.png");
+        image = new JLabel();
+
+                this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                image.requestFocusInWindow();
+            }
+        });
+
+    }
+
+    private void setLayoutLogin() {
+        setTitle("Tela de Login");
+        setSize(600, 650);
+        setLocationRelativeTo(null);
+        setLayout(null);
+        panel.setLayout(null);
+        add(panel);
     }
 }

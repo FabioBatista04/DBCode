@@ -1,38 +1,34 @@
 package br.edu.dombosco.dbcode.accessManagment.view;
 
+import br.edu.dombosco.dbcode.accessManagment.adapter.GenericFocusAdapter;
 import br.edu.dombosco.dbcode.accessManagment.controller.EmailController;
 import br.edu.dombosco.dbcode.accessManagment.model.Profile;
 import br.edu.dombosco.dbcode.accessManagment.model.User;
 import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
 
 import javax.swing.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 public class RegisterView extends JFrame {
-    private JLabel usernameLabel;
-    private JTextField user;
+    private final JPanel panel = new JPanel();
 
-    private JLabel emailLabel;
-    private JTextField email;
 
-    private JLabel passwordLabel;
-    private JPasswordField password;
+    private final JTextField user = new JTextField("Digite seu nome de usuário");
+    private final JTextField email = new JTextField("Digite seu email");
+    private final JPasswordField password = new JPasswordField("Digite sua senha");
+    private final JPasswordField replyPassword = new JPasswordField("Digite novamente sua senha");
+    private final JLabel labelProfile = new JLabel("Selecione o perfil:");
+    private final JComboBox<Profile> profileBox = new JComboBox<>(Profile.values());
 
-    private JLabel replyPasswordLabel;
-    private JPasswordField replyPassword;
+    private GenericFocusAdapter focus;
 
-    private JLabel profileLabel;
-    private ButtonGroup profileGroup;
-    private Profile profileSelected;
-
-    private JButton register;
-    int cantoEsquerdoTexto = 10;
-    int comprimentoTexto = 170;
-    int distanciaTexto = comprimentoTexto - 15;
+    private JButton register = new JButton("Cadastrar");
+    private JButton cancel = new JButton("Cancelar");
+    private final ImageIcon imageIcon = new ImageIcon("src/main/java/br/edu/dombosco/dbcode/accessManagment/view/image.png");
+    private final JLabel image = new JLabel();
     private UserController userController;
     private EmailController emailController;
 
@@ -48,38 +44,72 @@ public class RegisterView extends JFrame {
 
     private void setupListeners() {
 
-        usernameLabel.setBounds(cantoEsquerdoTexto, 10, comprimentoTexto, 25);
-        user.setBounds(distanciaTexto, 10, 150, 25);
-        emailLabel.setBounds(cantoEsquerdoTexto, 50, comprimentoTexto, 25);
-        email.setBounds(distanciaTexto, 50, 150, 25);
-        passwordLabel.setBounds(cantoEsquerdoTexto, 90, comprimentoTexto, 25);
-        password.setBounds(distanciaTexto, 90, 150, 25);
-        replyPasswordLabel.setBounds(cantoEsquerdoTexto, 130, comprimentoTexto, 25);
-        replyPassword.setBounds(distanciaTexto, 130, 150, 25);
-        profileLabel.setBounds(cantoEsquerdoTexto, 170, comprimentoTexto, 25);
+        image.setIcon(imageIcon);
+        image.setBounds(0, 0, 600, 650);
+        panel.add(image);
 
-
-        add(usernameLabel);
-        add(user);
-        add(emailLabel);
-        add(email);
-        add(passwordLabel);
-        add(password);
-        add(replyPasswordLabel);
-        add(replyPassword);
-        add(profileLabel);
+        register.setBounds(430, 490, 100, 30);
+        register.setBackground(new Color(8, 138, 179));
+        register.setForeground(new Color(255, 255, 255));
+        register.setBorderPainted(false);
+        panel.add(register);
         add(register);
 
-        for (Profile profile : Profile.values()) {
-            JRadioButton radioButton = new JRadioButton(profile.getProfileName());
-            radioButton.setBounds(profile.getPadding(), 195, profile.getWidth(), 25);
-            radioButton.addActionListener(e -> profileSelected = profile);
-            profileGroup.add(radioButton);
-            add(radioButton);
+        user.putClientProperty("defaultText","Digite seu nome de usuário");
+        user.setForeground(new Color(153, 153, 153));
+        user.setBounds(320, 140, 210, 30);
+        user.addFocusListener(focus);
+        panel.add(user);
+        add(user);
 
-        }
+        email.putClientProperty("defaultText","Digite seu email");
+        email.setForeground(new java.awt.Color(153, 153, 153));
+        email.setBounds(320, 210, 210, 30);
+        email.addFocusListener(focus);
+        panel.add(email);
+        add(email);
 
-        register.setBounds(130, 230, 150, 25);
+        password.putClientProperty("defaultText","Digite sua senha");
+        password.setForeground(new Color(153, 153, 153));
+        password.setBounds(320, 280, 210, 30);
+        password.addFocusListener(focus);
+        password.setEchoChar((char) 0);
+        panel.add(password);
+        add(password);
+
+        replyPassword.putClientProperty("defaultText","Digite novamente sua senha");
+        replyPassword.setForeground(new Color(153, 153, 153));
+        replyPassword.setBounds(320, 350, 210, 30);
+        replyPassword.addFocusListener(focus);
+        replyPassword.setEchoChar((char) 0);
+        panel.add(replyPassword);
+        add(replyPassword);
+
+        labelProfile.setForeground(new Color(255, 255, 255));
+        labelProfile.setBounds(320, 410, 140, 16);
+        panel.add(labelProfile);
+        add(labelProfile);
+
+        profileBox.setBounds(320, 430, 140, 22);
+        panel.add(profileBox);
+        add(profileBox);
+
+        cancel.setBounds(320, 490, 90, 30);
+        panel.add(cancel);
+        add(cancel);
+
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(panel, GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(panel, GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
+        );
+
+
         register.addActionListener(e -> {
             String username = user.getText();
             String emailAddress = email.getText();
@@ -93,7 +123,7 @@ public class RegisterView extends JFrame {
                     .username(username)
                     .email(emailAddress)
                     .password(userPassword)
-                    .profile(profileSelected)
+                    .profile((Profile) profileBox.getSelectedItem())
                     .fields(new ArrayList<>())
                     .build());
             if(userCreated.getFields().isEmpty()){
@@ -107,34 +137,26 @@ public class RegisterView extends JFrame {
             }
         });
 
-
-
-
+        cancel.addActionListener(e -> {
+                setVisible(false);
+                new LoginView(userController, emailController).setVisible(true);
+        });
     }
 
     private void initializeComponents() {
         setTitle("Cadastro");
-        setSize(800, 600);
+        setSize(600, 650);
         setLocationRelativeTo(null);
-        //setLayout(new GridLayout(3, 2));
         setLayout(null);
+        panel.setLayout(null);
 
-        usernameLabel = new JLabel("Nome de Usuário:");
-        user = new JTextField();
-
-        emailLabel = new JLabel("Email:");
-        email = new JTextField();
-
-        password = new JPasswordField();
-        passwordLabel = new JLabel("Nova Senha:");
-
-        replyPassword = new JPasswordField();
-        replyPasswordLabel = new JLabel("Repita Nova Senha:");
-
-        profileLabel = new JLabel("Perfil:");
-        profileGroup = new ButtonGroup();
-
-        register = new JButton("Registrar");
+        focus = new GenericFocusAdapter();
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                image.requestFocusInWindow();
+            }
+        });
 
     }
 
