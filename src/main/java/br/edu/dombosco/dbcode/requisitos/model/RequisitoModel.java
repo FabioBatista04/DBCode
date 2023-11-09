@@ -25,7 +25,6 @@ public class RequisitosModel {
     private String file_especificacao; // não sei como anexar um arquivo
     @Column(nullable = false)
     private String file_desenho; // não sei como anexar um arquivo
-    @Column(nullable = false)
 
 
     public boolean containsNullFields(){

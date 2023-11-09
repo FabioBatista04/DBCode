@@ -22,14 +22,14 @@ public class SendEmailView extends JFrame {
     private JButton sendCode = new JButton("Enviar código");
     private JButton savePassword = new JButton("Salvar");
     private JButton cancel = new JButton("Cancelar");
-    private ImageIcon imageIcon = new ImageIcon("src/main/java/br/edu/dombosco/dbcode/accessManagment/view/image.png");
+    private ImageIcon imageIcon = new ImageIcon("src/main/resources/images/image.png");
     private JLabel image = new JLabel(imageIcon);
 
     private GenericFocusAdapter focus = new GenericFocusAdapter();
     private final EmailController emailController;
     private final UserController userController;
 
-    private User user;
+    private User user = User.builder().build();
 
     public SendEmailView(UserController userController, EmailController emailController) {
         this.emailController = emailController;
@@ -42,21 +42,21 @@ public class SendEmailView extends JFrame {
         panel.setLayout(null);
 
 
-        email.setBounds(330, 140, 210, 22);
+        email.setBounds(330, 140, 210, 30);
         email.setForeground(new Color(153, 153, 153));
         email.putClientProperty("defaultText","Digite seu email cadastrado");
         email.addFocusListener(focus);
         panel.add(email);
         add(email);
 
-        code.setBounds(330, 230, 210, 22);
+        code.setBounds(330, 230, 210, 30);
         code.setForeground(new Color(153, 153, 153));
         code.putClientProperty("defaultText","Digite o código recebido");
         code.addFocusListener(focus);
         panel.add(code);
         add(code);
 
-        password.setBounds(330, 300, 210, 22);
+        password.setBounds(330, 300, 210, 30);
         password.setForeground(new Color(153, 153, 153));
         password.putClientProperty("defaultText","Digite a nova senha");
         password.addFocusListener(focus);
@@ -64,7 +64,7 @@ public class SendEmailView extends JFrame {
         panel.add(password);
         add(password);
 
-        replyPassword.setBounds(330, 350, 210, 22);
+        replyPassword.setBounds(330, 350, 210, 30);
         replyPassword.setForeground(new Color(153, 153, 153));
         replyPassword.putClientProperty("defaultText","Repita a nova senha");
         replyPassword.addFocusListener(focus);
@@ -72,7 +72,7 @@ public class SendEmailView extends JFrame {
         panel.add(replyPassword);
         add(replyPassword);
 
-        sendCode.setBounds(370, 410, 120, 23);
+        sendCode.setBounds(370, 410, 140, 23);
         panel.add(sendCode);
         add(sendCode);
 
@@ -124,35 +124,32 @@ public class SendEmailView extends JFrame {
 
         savePassword.addActionListener(e -> {
             String code = SendEmailView.this.code.getText();
-            log.info("sssssss {}",SendEmailView.this.code.getText());
 
             if (code == null || code.isEmpty() || code.equals("Digite o código recebido")) {
                 JOptionPane.showMessageDialog(SendEmailView.this, "Código vazio", "Valide Campos", JOptionPane.WARNING_MESSAGE);
             } else {
                 var user = userController.findByEmail(SendEmailView.this.user.getEmail());
-                if (user == null) {
-                    JOptionPane.showMessageDialog(SendEmailView.this, "Email não encontrado", "Valide Campos", JOptionPane.WARNING_MESSAGE);
-                } else if (!code.equals(user.getResetCode())) {
+                if (user != null && !code.equals(user.getResetCode())) {
                     JOptionPane.showMessageDialog(SendEmailView.this, "Código não é válido", "Valide Campos", JOptionPane.WARNING_MESSAGE);
+                }else {
+                    String userPassword = new String(SendEmailView.this.password.getPassword());
+                    String userReplyPassword = new String(SendEmailView.this.replyPassword.getPassword());
+                    if(userPassword.isEmpty() || userReplyPassword.isEmpty() || !userPassword.equals(userReplyPassword)){
+                        JOptionPane.showMessageDialog(SendEmailView.this, "Senhas não conferem","Valide Campos",JOptionPane.WARNING_MESSAGE);
+                    }else{
+                        user.setPassword(userPassword);
+                        var userCreated = userController.update(user);
+                        if(userCreated != null){
+                            JOptionPane.showMessageDialog(this, "Registro efetuado com sucesso!");
+                            setVisible(false);
+                            new LoginView(userController, emailController).setVisible(true);
+                        }else {
+                            String mensagem = "Erro ao atualizar senha";
+                            JOptionPane.showMessageDialog(SendEmailView.this, mensagem,"Erro",JOptionPane.ERROR_MESSAGE);
+
+                        }
+                    }
                 }
-            }
-
-            String userPassword = new String(SendEmailView.this.password.getPassword());
-            String userReplyPassword = new String(SendEmailView.this.replyPassword.getPassword());
-            if(userPassword.isEmpty() || userReplyPassword.isEmpty() || !userPassword.equals(userReplyPassword)){
-                JOptionPane.showMessageDialog(SendEmailView.this, "Senhas não conferem","Valide Campos",JOptionPane.WARNING_MESSAGE);
-            }
-            user.setPassword(userPassword);
-            var userCreated = userController.update(user);
-
-            if(userCreated != null){
-                JOptionPane.showMessageDialog(this, "Registro efetuado com sucesso!");
-                setVisible(false);
-                new LoginView(userController, emailController).setVisible(true);
-            }else {
-                String mensagem = "Erro ao atualizar senha";
-                JOptionPane.showMessageDialog(SendEmailView.this, mensagem,"Erro",JOptionPane.ERROR_MESSAGE);
-
             }
         });
 
