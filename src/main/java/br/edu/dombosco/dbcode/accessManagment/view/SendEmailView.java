@@ -4,6 +4,7 @@ import br.edu.dombosco.dbcode.accessManagment.adapter.GenericFocusAdapter;
 import br.edu.dombosco.dbcode.accessManagment.controller.EmailController;
 import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
 import br.edu.dombosco.dbcode.accessManagment.model.User;
+import br.edu.dombosco.dbcode.bugs.controller.BugController;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -31,7 +32,7 @@ public class SendEmailView extends JFrame {
 
     private User user = User.builder().build();
 
-    public SendEmailView(UserController userController, EmailController emailController) {
+    public SendEmailView(UserController userController, EmailController emailController, BugController bugController) {
         this.emailController = emailController;
         this.userController = userController;
         setVisible(true);
@@ -142,7 +143,7 @@ public class SendEmailView extends JFrame {
                         if(userCreated != null){
                             JOptionPane.showMessageDialog(this, "Registro efetuado com sucesso!");
                             setVisible(false);
-                            new LoginView(userController, emailController).setVisible(true);
+                            new LoginView(userController, emailController, bugController).setVisible(true);
                         }else {
                             String mensagem = "Erro ao atualizar senha";
                             JOptionPane.showMessageDialog(SendEmailView.this, mensagem,"Erro",JOptionPane.ERROR_MESSAGE);
@@ -155,7 +156,7 @@ public class SendEmailView extends JFrame {
 
         cancel.addActionListener(e -> {
             setVisible(false);
-            new LoginView(userController, emailController).setVisible(true);
+            new LoginView(userController, emailController, bugController).setVisible(true);
         });
 
         this.addWindowListener(new WindowAdapter() {

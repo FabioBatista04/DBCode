@@ -5,6 +5,7 @@ import br.edu.dombosco.dbcode.accessManagment.controller.EmailController;
 import br.edu.dombosco.dbcode.accessManagment.model.Profile;
 import br.edu.dombosco.dbcode.accessManagment.model.User;
 import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
+import br.edu.dombosco.dbcode.bugs.controller.BugController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,10 +32,12 @@ public class RegisterView extends JFrame {
     private final JLabel image = new JLabel();
     private UserController userController;
     private EmailController emailController;
+    private BugController bugController;
 
-    public RegisterView(UserController userController, EmailController emailController) {
+    public RegisterView(UserController userController, EmailController emailController, BugController bugController) {
         this.userController = userController;
         this.emailController = emailController;
+        this.bugController = bugController;
         setLocationRelativeTo(null);
         initializeComponents();
         setupListeners();
@@ -129,7 +132,7 @@ public class RegisterView extends JFrame {
             if(userCreated.getFields().isEmpty()){
                 JOptionPane.showMessageDialog(this, "Registro efetuado com sucesso!");
                 setVisible(false);
-                new LoginView(userController, emailController).setVisible(true);
+                new LoginView(userController, emailController, bugController).setVisible(true);
             }else {
                 String mensagem = "Por favor, verifique os seguintes campos: " + String.join(", ", userCreated.getFields());
                 JOptionPane.showMessageDialog(RegisterView.this, mensagem,"Valide Campos",JOptionPane.WARNING_MESSAGE);
@@ -139,7 +142,7 @@ public class RegisterView extends JFrame {
 
         cancel.addActionListener(e -> {
                 setVisible(false);
-                new LoginView(userController, emailController).setVisible(true);
+                new LoginView(userController, emailController, bugController).setVisible(true);
         });
     }
 

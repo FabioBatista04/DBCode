@@ -98,4 +98,8 @@ public class UserController {
         if(user == null) return null;
         return userRepository.save(user);
     }
+
+    public User getUser(String usuario){
+        return userRepository.findUserByUsername(usuario);
+    }
 }

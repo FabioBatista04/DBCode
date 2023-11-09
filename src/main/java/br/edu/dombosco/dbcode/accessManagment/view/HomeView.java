@@ -1,5 +1,9 @@
 package br.edu.dombosco.dbcode.accessManagment.view;
 
+import br.edu.dombosco.dbcode.bugs.controller.BugController;
+import br.edu.dombosco.dbcode.accessManagment.model.User;
+import br.edu.dombosco.dbcode.bugs.view.BugHomeView;
+
 import javax.swing.*;
 import javax.swing.plaf.PanelUI;
 import java.awt.*;
@@ -12,8 +16,6 @@ public class HomeView extends JFrame {
     private JMenuItem subMenuRequisitos;
     private JMenuItem subMenuRequisitos2;
     private JMenu bugs;
-    private JMenuItem subMenuBugs;
-    private JMenuItem subMenuBugs2;
     private JMenu test;
     private JMenuItem subMenuTest;
     private JMenuItem subMenutest2;
@@ -24,8 +26,13 @@ public class HomeView extends JFrame {
     private ImageIcon imageIcon;
     private JLabel image;
 
-    public HomeView(){
+    private BugController bugController;
+    private BugHomeView subMenuBugs;
+    private User user;
 
+    public HomeView(BugController bugController, User user){
+        this.bugController = bugController;
+        this.user = user;
         setLayoutHome();
 
         initComponents();
@@ -86,8 +93,6 @@ public class HomeView extends JFrame {
 
         bugs.add(subMenuBugs);
 
-        bugs.add(subMenuBugs2);
-
         menu.add(bugs);
 
         test.setText("Test");
@@ -128,8 +133,7 @@ public class HomeView extends JFrame {
         subMenuRequisitos = new JMenuItem("Cadastrar");
         subMenuRequisitos2 = new JMenuItem("Editar");
         bugs = new JMenu();
-        subMenuBugs = new JMenuItem("Cadastrar");
-        subMenuBugs2 = new JMenuItem("Editar");
+        subMenuBugs = new BugHomeView(bugController, user);
         test = new JMenu();
         subMenuTest = new JMenuItem("Cadastrar");
         subMenutest2 = new JMenuItem("Editar");

@@ -4,6 +4,7 @@ import br.edu.dombosco.dbcode.accessManagment.adapter.GenericFocusAdapter;
 import br.edu.dombosco.dbcode.accessManagment.controller.EmailController;
 import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
 import br.edu.dombosco.dbcode.accessManagment.model.User;
+import br.edu.dombosco.dbcode.bugs.controller.BugController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,11 +32,13 @@ public class LoginView extends JFrame {
 
     private UserController userController;
     private EmailController emailController;
+    private BugController bugController;
 
 
-    public LoginView(UserController userController, EmailController emailController) {
+    public LoginView(UserController userController, EmailController emailController, BugController bugController) {
         this.userController = userController;
         this.emailController = emailController;
+        this.bugController = bugController;
 
         initComponents();
         setLayoutLogin();
@@ -102,8 +105,9 @@ public class LoginView extends JFrame {
 
                 var user = userController.login(User.builder().username(usuario).password(senha).fields(new ArrayList<>()).build());
                 if(user.getFields().isEmpty()){
+                    User user_info = userController.getUser(usuario);
                     setVisible(false);
-                    new HomeView().setVisible(true);
+                    new HomeView(bugController, user_info).setVisible(true);
                 }else {
                     String mensagem = "Por favor, verifique os seguintes campos: " + String.join(", ", user.getFields());
                     JOptionPane.showMessageDialog(LoginView.this, mensagem,"Valide Campos",JOptionPane.WARNING_MESSAGE);
@@ -116,7 +120,7 @@ public class LoginView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                new SendEmailView(userController, emailController).setVisible(true);
+                new SendEmailView(userController, emailController, bugController).setVisible(true);
 
             }
         });
@@ -125,7 +129,7 @@ public class LoginView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                new RegisterView(userController, emailController).setVisible(true);
+                new RegisterView(userController, emailController, bugController).setVisible(true);
             }
         });
     }
