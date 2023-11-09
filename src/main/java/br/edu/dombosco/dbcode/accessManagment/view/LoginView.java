@@ -23,7 +23,7 @@ public class LoginView extends JFrame {
 
     private Color color;
 
-    private GenericFocusAdapter focus = new GenericFocusAdapter();
+    private GenericFocusAdapter focus;
 
     private ImageIcon imageIcon;
 
@@ -41,7 +41,7 @@ public class LoginView extends JFrame {
         setLayoutLogin();
         setUpListeners();
 
-        username.setBounds(340, 130, 180, 30);
+        username.setBounds(340, 130, 200, 30);
         username.setForeground(color);
         username.addFocusListener(focus);
         username.putClientProperty("defaultText","Digite seu usuário");
@@ -52,25 +52,25 @@ public class LoginView extends JFrame {
         password.putClientProperty("defaultText","Digite sua senha");
         password.addFocusListener(focus);
         panel.add(password);
-        password.setBounds(340, 210, 180, 30);
+        password.setBounds(340, 210, 200, 30);
 
         forgetPassword.setForeground(new java.awt.Color(204, 204, 204));
         forgetPassword.setText("Esqueci minha senha");
         panel.add(forgetPassword);
-        forgetPassword.setBounds(340, 480, 130, 16);
+        forgetPassword.setBounds(340, 480, 180, 16);
         forgetPassword.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         singUp.setForeground(new java.awt.Color(204, 204, 204));
         singUp.setText("Cadastre-se");
         panel.add(singUp);
-        singUp.setBounds(340, 440, 70, 16);
+        singUp.setBounds(340, 440, 180, 16);
         singUp.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         image.setIcon(imageIcon);
         panel.add(image);
         image.setBounds(0, 0, 600, 650);
 
-        login.setBounds(380, 340, 72, 23);
+        login.setBounds(380, 340, 100, 23);
         panel.add(login);
 
         GroupLayout layout = new GroupLayout(getContentPane());
@@ -116,7 +116,7 @@ public class LoginView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                new SendEmailView(userController, emailController).setVisible(true);
+                new ResetPassword(userController, emailController).setVisible(true);
 
             }
         });
@@ -138,13 +138,14 @@ public class LoginView extends JFrame {
         singUp = new JLabel("Cadastre-se");
         forgetPassword = new JLabel("Esqueci minha senha");
         color = new Color(153, 153, 153);
-        imageIcon = new ImageIcon("src/main/java/br/edu/dombosco/dbcode/accessManagment/view/image.png");
+        imageIcon = new ImageIcon("src/main/resources/images/image.png");
         image = new JLabel();
+        focus = new GenericFocusAdapter();
 
                 this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
-                image.requestFocusInWindow();
+                login.requestFocusInWindow();
             }
         });
 

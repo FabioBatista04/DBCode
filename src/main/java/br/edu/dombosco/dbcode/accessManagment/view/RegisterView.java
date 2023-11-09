@@ -27,7 +27,7 @@ public class RegisterView extends JFrame {
 
     private JButton register = new JButton("Cadastrar");
     private JButton cancel = new JButton("Cancelar");
-    private final ImageIcon imageIcon = new ImageIcon("src/main/java/br/edu/dombosco/dbcode/accessManagment/view/image.png");
+    private final ImageIcon imageIcon = new ImageIcon("src/main/resources/images/image.png");
     private final JLabel image = new JLabel();
     private UserController userController;
     private EmailController emailController;
@@ -48,7 +48,7 @@ public class RegisterView extends JFrame {
         image.setBounds(0, 0, 600, 650);
         panel.add(image);
 
-        register.setBounds(430, 490, 100, 30);
+        register.setBounds(430, 490, 110, 30);
         register.setBackground(new Color(8, 138, 179));
         register.setForeground(new Color(255, 255, 255));
         register.setBorderPainted(false);
@@ -94,7 +94,7 @@ public class RegisterView extends JFrame {
         panel.add(profileBox);
         add(profileBox);
 
-        cancel.setBounds(320, 490, 90, 30);
+        cancel.setBounds(320, 490, 100, 30);
         panel.add(cancel);
         add(cancel);
 
