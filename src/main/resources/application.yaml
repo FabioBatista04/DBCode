@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://root:root@localhost:3306/dom-soft?allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mysql://root:root@localhost:3306/DBCode?allowPublicKeyRetrieval=true&useSSL=false
     username: root
-    password: meu_password
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -11,6 +11,20 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+
+  mail:
+    host: smtp.outlook.com
+    port: 587
+    username: dbcode2023@outlook.com
+    password: DBCode@2023
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 
 server:
   port: 8080
