@@ -12,7 +12,7 @@ import java.awt.event.*;
 
 @Slf4j
 
-public class SendEmailView extends JFrame {
+public class ResetPassword extends JFrame {
 
     private JPanel panel = new JPanel();
     private JTextField email = new JTextField("Digite seu email cadastrado");
@@ -31,9 +31,9 @@ public class SendEmailView extends JFrame {
 
     private User user = User.builder().build();
 
-    public SendEmailView(UserController userController, EmailController emailController) {
-        this.emailController = emailController;
-        this.userController = userController;
+    public ResetPassword(LoginView loginView) {
+        this.emailController = loginView.getEmailController();
+        this.userController = loginView.getUserController();
         setVisible(true);
         setTitle("Password Reset");
         setSize(600, 650);
@@ -104,16 +104,16 @@ public class SendEmailView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                String email = SendEmailView.this.email.getText();
+                String email = ResetPassword.this.email.getText();
                 if(email == null || email.isEmpty() || email.equals("Digite seu email cadastrado")){
-                    JOptionPane.showMessageDialog(SendEmailView.this, "Email vazio","Valide Campos",JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(ResetPassword.this, "Email vazio","Valide Campos",JOptionPane.WARNING_MESSAGE);
                 }else {
                     var user = emailController.sendEmailToResetPassword(email);
                     if (user == null){
-                        JOptionPane.showMessageDialog(SendEmailView.this, "Email não encontrado","Valide Campos",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(ResetPassword.this, "Email não encontrado","Valide Campos",JOptionPane.WARNING_MESSAGE);
                     } else {
-                        SendEmailView.this.user = user;
-                        JOptionPane.showMessageDialog(SendEmailView.this, "Email Enviado","Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                        ResetPassword.this.user = user;
+                        JOptionPane.showMessageDialog(ResetPassword.this, "Email Enviado","Sucesso", JOptionPane.INFORMATION_MESSAGE);
                     }
 
                 }
@@ -123,29 +123,29 @@ public class SendEmailView extends JFrame {
         });
 
         savePassword.addActionListener(e -> {
-            String code = SendEmailView.this.code.getText();
+            String code = ResetPassword.this.code.getText();
 
             if (code == null || code.isEmpty() || code.equals("Digite o código recebido")) {
-                JOptionPane.showMessageDialog(SendEmailView.this, "Código vazio", "Valide Campos", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(ResetPassword.this, "Código vazio", "Valide Campos", JOptionPane.WARNING_MESSAGE);
             } else {
-                var user = userController.findByEmail(SendEmailView.this.user.getEmail());
+                var user = userController.findByEmail(ResetPassword.this.user.getEmail());
                 if (user != null && !code.equals(user.getResetCode())) {
-                    JOptionPane.showMessageDialog(SendEmailView.this, "Código não é válido", "Valide Campos", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(ResetPassword.this, "Código não é válido", "Valide Campos", JOptionPane.WARNING_MESSAGE);
                 }else {
-                    String userPassword = new String(SendEmailView.this.password.getPassword());
-                    String userReplyPassword = new String(SendEmailView.this.replyPassword.getPassword());
+                    String userPassword = new String(ResetPassword.this.password.getPassword());
+                    String userReplyPassword = new String(ResetPassword.this.replyPassword.getPassword());
                     if(userPassword.isEmpty() || userReplyPassword.isEmpty() || !userPassword.equals(userReplyPassword)){
-                        JOptionPane.showMessageDialog(SendEmailView.this, "Senhas não conferem","Valide Campos",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(ResetPassword.this, "Senhas não conferem","Valide Campos",JOptionPane.WARNING_MESSAGE);
                     }else{
                         user.setPassword(userPassword);
                         var userCreated = userController.update(user);
                         if(userCreated != null){
                             JOptionPane.showMessageDialog(this, "Registro efetuado com sucesso!");
                             setVisible(false);
-                            new LoginView(userController, emailController).setVisible(true);
+                            loginView.setVisible(true);
                         }else {
                             String mensagem = "Erro ao atualizar senha";
-                            JOptionPane.showMessageDialog(SendEmailView.this, mensagem,"Erro",JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(ResetPassword.this, mensagem,"Erro",JOptionPane.ERROR_MESSAGE);
 
                         }
                     }
@@ -155,7 +155,7 @@ public class SendEmailView extends JFrame {
 
         cancel.addActionListener(e -> {
             setVisible(false);
-            new LoginView(userController, emailController).setVisible(true);
+            loginView.setVisible(true);
         });
 
         this.addWindowListener(new WindowAdapter() {

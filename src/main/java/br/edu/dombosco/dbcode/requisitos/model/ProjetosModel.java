@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class ProjetosModel {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Long id;
     private String titulo;
     @Column(nullable = false)
     private String descricao;
