@@ -20,6 +20,13 @@ public class RequisitosController {
     public RequisitoModel editar(RequisitoModel requisitoModel) {
         return repository.save(requisitoModel);
     }
-    
-    
+
+    public RequisitoModel findRequisitoModelById(Long id){
+        return repository.findRequisitoModelById(id);
+    }
+
+
+    public void delete(Long objectId) {
+        repository.deleteById(objectId);
+    }
 }

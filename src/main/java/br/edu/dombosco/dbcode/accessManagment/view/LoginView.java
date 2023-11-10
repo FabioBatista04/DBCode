@@ -4,36 +4,35 @@ import br.edu.dombosco.dbcode.accessManagment.adapter.GenericFocusAdapter;
 import br.edu.dombosco.dbcode.accessManagment.controller.EmailController;
 import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
 import br.edu.dombosco.dbcode.accessManagment.model.User;
+import br.edu.dombosco.dbcode.requisitos.controller.RequisitosController;
+import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-
+@Getter
 public class LoginView extends JFrame {
 
     private JPanel panel;
-
     private JTextField username;
     private JPasswordField password;
     private JLabel forgetPassword;
     private JLabel singUp;
     private JButton login;
-
     private Color color;
-
     private GenericFocusAdapter focus;
-
     private ImageIcon imageIcon;
-
     private JLabel image;
 
     private UserController userController;
     private EmailController emailController;
+    private RequisitosController requisitosController;
 
 
-    public LoginView(UserController userController, EmailController emailController) {
+    public LoginView(UserController userController, EmailController emailController, RequisitosController requisitosController) {
+        this.requisitosController = requisitosController;
         this.userController = userController;
         this.emailController = emailController;
 
@@ -103,7 +102,7 @@ public class LoginView extends JFrame {
                 var user = userController.login(User.builder().username(usuario).password(senha).fields(new ArrayList<>()).build());
                 if(user.getFields().isEmpty()){
                     setVisible(false);
-                    new HomeView().setVisible(true);
+                    new HomeView(requisitosController).setVisible(true);
                 }else {
                     String mensagem = "Por favor, verifique os seguintes campos: " + String.join(", ", user.getFields());
                     JOptionPane.showMessageDialog(LoginView.this, mensagem,"Valide Campos",JOptionPane.WARNING_MESSAGE);
@@ -116,7 +115,7 @@ public class LoginView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                new ResetPassword(userController, emailController).setVisible(true);
+                new ResetPassword(LoginView.this).setVisible(true);
 
             }
         });
@@ -125,7 +124,7 @@ public class LoginView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                new RegisterView(userController, emailController).setVisible(true);
+                new RegisterView(LoginView.this).setVisible(true);
             }
         });
     }

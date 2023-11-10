@@ -1,17 +1,13 @@
 package br.edu.dombosco.dbcode.accessManagment.view;
 
-import br.edu.dombosco.dbcode.requisitos.view.FrameTest;
-import br.edu.dombosco.dbcode.requisitos.view.FrameTest2;
+import br.edu.dombosco.dbcode.requisitos.controller.RequisitosController;
+import br.edu.dombosco.dbcode.requisitos.view.RequisitoView;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
-import javax.swing.plaf.PanelUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 @Slf4j
 public class HomeView extends JFrame {
@@ -34,10 +30,9 @@ public class HomeView extends JFrame {
     private ImageIcon imageIcon;
     private JLabel image;
 
-    private JPanel cards;
-    private CardLayout cardLayout;
-
-    public HomeView(){
+    private RequisitosController requisitosController;
+    public HomeView(RequisitosController requisitosController){
+        this.requisitosController = requisitosController;
         setLayoutHome();
         initComponents();
         configComponents();
@@ -50,7 +45,7 @@ public class HomeView extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 log.info("Requisitos Menu Item clicked");
                 setVisible(false);
-                new FrameTest2().setVisible(true);
+                new RequisitoView(requisitosController).setVisible(true);
             }
         });
     }

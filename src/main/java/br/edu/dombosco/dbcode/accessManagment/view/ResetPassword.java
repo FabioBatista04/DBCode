@@ -31,9 +31,9 @@ public class ResetPassword extends JFrame {
 
     private User user = User.builder().build();
 
-    public ResetPassword(UserController userController, EmailController emailController) {
-        this.emailController = emailController;
-        this.userController = userController;
+    public ResetPassword(LoginView loginView) {
+        this.emailController = loginView.getEmailController();
+        this.userController = loginView.getUserController();
         setVisible(true);
         setTitle("Password Reset");
         setSize(600, 650);
@@ -142,7 +142,7 @@ public class ResetPassword extends JFrame {
                         if(userCreated != null){
                             JOptionPane.showMessageDialog(this, "Registro efetuado com sucesso!");
                             setVisible(false);
-                            new LoginView(userController, emailController).setVisible(true);
+                            loginView.setVisible(true);
                         }else {
                             String mensagem = "Erro ao atualizar senha";
                             JOptionPane.showMessageDialog(ResetPassword.this, mensagem,"Erro",JOptionPane.ERROR_MESSAGE);
@@ -155,7 +155,7 @@ public class ResetPassword extends JFrame {
 
         cancel.addActionListener(e -> {
             setVisible(false);
-            new LoginView(userController, emailController).setVisible(true);
+            loginView.setVisible(true);
         });
 
         this.addWindowListener(new WindowAdapter() {
