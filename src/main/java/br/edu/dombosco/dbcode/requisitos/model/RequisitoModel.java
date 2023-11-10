@@ -11,25 +11,20 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequisitosModel {
+@Table(name = "REQUIREMENT")
+public class RequisitoModel {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
+    @Column(name = "NAME", nullable = false, unique = true)
     private String nome;
-    @Column(nullable = false)
+    @Column(name = "QUALIFICATION", nullable = false)
     private String qualificacao;
-    @Column(nullable = false)
+    @Column(name = "DESCRIPTION", nullable = false)
     private String descricao;
-    @Column(nullable = false)
-    private String file_especificacao; // não sei como anexar um arquivo
-    @Column(nullable = false)
-    private String file_desenho; // não sei como anexar um arquivo
-
-
-    public boolean containsNullFields(){
-        return this.nome == null || this.qualificacao == null  || this.descricao == null || this.file_especificacao == null || this.file_desenho == null;
-
-    }
+    @Column(name = "FILE_ESPECIFICATION", nullable = false)
+    private String file_especificacao;
+    @Column(name = "FILE_LAYOUT", nullable = false)
+    private String file_desenho;
 }
 

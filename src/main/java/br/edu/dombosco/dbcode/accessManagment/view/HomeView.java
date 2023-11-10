@@ -1,9 +1,15 @@
 package br.edu.dombosco.dbcode.accessManagment.view;
 
-import javax.swing.*;
-import javax.swing.plaf.PanelUI;
-import java.awt.*;
+import br.edu.dombosco.dbcode.requisitos.controller.RequisitosController;
+import br.edu.dombosco.dbcode.requisitos.view.RequisitoView;
+import lombok.extern.slf4j.Slf4j;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+@Slf4j
 public class HomeView extends JFrame {
 
 
@@ -24,43 +30,24 @@ public class HomeView extends JFrame {
     private ImageIcon imageIcon;
     private JLabel image;
 
-    public HomeView(){
-
+    private RequisitosController requisitosController;
+    public HomeView(RequisitosController requisitosController){
+        this.requisitosController = requisitosController;
         setLayoutHome();
-
         initComponents();
-
         configComponents();
+        setListeners();
+    }
 
-
-//        JTabbedPane tabbedPane = new JTabbedPane();
-//
-//        JPanel panel1 = new JPanel(new BorderLayout());
-//        panel1.add(new JLabel("Conteudo Requisitos"));
-//        tabbedPane.addTab("Requisitos", panel1);
-//
-//        JPanel panel2 = new JPanel(new BorderLayout());
-//        panel2.add(new JLabel("Conteudo Testes"));
-//        tabbedPane.addTab("Testes", panel2);
-//
-//        JPanel panel3 = new JPanel(new BorderLayout());
-//        panel3.add(new JLabel("Conteudo Bugs"));
-//        tabbedPane.addTab("Bugs", panel3);
-//
-//        JPanel panel4 = new JPanel(new BorderLayout());
-//        panel4.add(new JLabel("Conteudo Configurações"));
-//        tabbedPane.addTab("Configurações", panel4);
-//
-//        frame.add(tabbedPane, BorderLayout.CENTER);
-//
-//        JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-//        JButton exitButton = new JButton("Sair");
-//        exitButton.addActionListener(e -> System.exit(0)); // Sai do programa ao clicar
-//        footerPanel.add(exitButton);
-//
-//        frame.add(footerPanel, BorderLayout.PAGE_END);
-//
-//        frame.setVisible(true);
+    private void setListeners() {
+        subMenuRequisitos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                log.info("Requisitos Menu Item clicked");
+                setVisible(false);
+                new RequisitoView(requisitosController).setVisible(true);
+            }
+        });
     }
 
     private void setLayoutHome() {
@@ -74,38 +61,19 @@ public class HomeView extends JFrame {
     private void configComponents() {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        requisitos.setText("Requisitos");
 
         requisitos.add(subMenuRequisitos);
-
         requisitos.add(subMenuRequisitos2);
-
         menu.add(requisitos);
-
-        bugs.setText("Bugs");
-
         bugs.add(subMenuBugs);
-
         bugs.add(subMenuBugs2);
-
         menu.add(bugs);
-
-        test.setText("Test");
-
         test.add(subMenuTest);
-
         test.add(subMenutest2);
-
         menu.add(test);
-
-        config.setText("Configurações");
-
         config.add(subMenuConfig);
-
         config.add(subMenuConfig2);
-
         menu.add(config);
-
         setJMenuBar(menu);
         image.setIcon(imageIcon);
 
@@ -124,19 +92,19 @@ public class HomeView extends JFrame {
     private void initComponents() {
 
         menu = new JMenuBar();
-        requisitos = new JMenu();
+        requisitos = new JMenu("Requisitos");
         subMenuRequisitos = new JMenuItem("Cadastrar");
         subMenuRequisitos2 = new JMenuItem("Editar");
-        bugs = new JMenu();
+        bugs = new JMenu("Bugs");
         subMenuBugs = new JMenuItem("Cadastrar");
         subMenuBugs2 = new JMenuItem("Editar");
-        test = new JMenu();
+        test = new JMenu("Test");
         subMenuTest = new JMenuItem("Cadastrar");
         subMenutest2 = new JMenuItem("Editar");
-        config = new JMenu();
+        config = new JMenu("Configurações");
         subMenuConfig = new JMenuItem("Cadastrar");
         subMenuConfig2 = new JMenuItem("Editar");
-        imageIcon = new ImageIcon("src/main/java/br/edu/dombosco/dbcode/accessManagment/view/backend_opaco.png");
+        imageIcon = new ImageIcon("src/main/resources/images/backend_opaco.png");
         image = new JLabel();
 
     }

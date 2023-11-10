@@ -6,11 +6,13 @@ package br.edu.dombosco.dbcode.requisitos.view;
 
 import br.edu.dombosco.dbcode.requisitos.controller.ProjetosController;
 
+import javax.swing.*;
+
 /**
  *
  * @author user
  */
-public class ProjetosView extends javax.swing.JPanel {
+public class ProjetosView extends JFrame {
 
     /**
      * Creates new form F_Projetos
