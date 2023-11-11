@@ -212,7 +212,7 @@ public class BugQueryView extends JPanel {
 
     private void initComponents() {
         //setTitle("Consulta de Bug");
-        setSize(700, 600);
+        setSize(800, 650);
         //setLocationRelativeTo(null);
         setLayout(null);
 

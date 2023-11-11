@@ -4,6 +4,7 @@ import br.edu.dombosco.dbcode.accessManagment.adapter.GenericFocusAdapter;
 import br.edu.dombosco.dbcode.accessManagment.controller.EmailController;
 import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
 import br.edu.dombosco.dbcode.accessManagment.model.User;
+import br.edu.dombosco.dbcode.requisitos.controller.ProjetoController;
 import br.edu.dombosco.dbcode.requisitos.controller.RequisitosController;
 import lombok.Getter;
 import br.edu.dombosco.dbcode.bugs.controller.BugController;
@@ -31,50 +32,53 @@ public class LoginView extends JFrame {
     private EmailController emailController;
     private RequisitosController requisitosController;
     private BugController bugController;
+    private ProjetoController projetoController;
     private User user;
 
 
-    public LoginView(UserController userController, EmailController emailController, RequisitosController requisitosController, BugController bugController) {
+    public LoginView(UserController userController, EmailController emailController, RequisitosController requisitosController, BugController bugController, ProjetoController projetoController) {
         this.requisitosController = requisitosController;
         this.userController = userController;
         this.emailController = emailController;
         this.bugController = bugController;
+        this.projetoController = projetoController;
 
         initComponents();
         setLayoutLogin();
         setUpListeners();
+        addComponentsToPanel();
 
         username.setBounds(340, 130, 200, 30);
         username.setForeground(color);
         username.addFocusListener(focus);
         username.putClientProperty("defaultText","Digite seu usuário");
-        panel.add(username);
+
 
         password.setForeground(color);
         password.setEchoChar((char) 0);
         password.putClientProperty("defaultText","Digite sua senha");
         password.addFocusListener(focus);
-        panel.add(password);
+
         password.setBounds(340, 210, 200, 30);
 
         forgetPassword.setForeground(new java.awt.Color(204, 204, 204));
         forgetPassword.setText("Esqueci minha senha");
-        panel.add(forgetPassword);
+
         forgetPassword.setBounds(340, 480, 180, 16);
         forgetPassword.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         singUp.setForeground(new java.awt.Color(204, 204, 204));
         singUp.setText("Cadastre-se");
-        panel.add(singUp);
+
         singUp.setBounds(340, 440, 180, 16);
         singUp.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         image.setIcon(imageIcon);
-        panel.add(image);
+
         image.setBounds(0, 0, 600, 650);
 
         login.setBounds(380, 340, 100, 23);
-        panel.add(login);
+
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -92,6 +96,15 @@ public class LoginView extends JFrame {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    private void addComponentsToPanel() {
+        panel.add(username);
+        panel.add(password);
+        panel.add(forgetPassword);
+        panel.add(singUp);
+        panel.add(login);
+        panel.add(image);
     }
 
     private void setUpListeners() {
@@ -119,19 +132,25 @@ public class LoginView extends JFrame {
         forgetPassword.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                setVisible(false);
-                new ResetPassword(LoginView.this).setVisible(true);
-
+                addPanel(new ResetPassword(LoginView.this));
             }
         });
 
         singUp.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                setVisible(false);
-                new RegisterView(LoginView.this).setVisible(true);
+                //setVisible(false);
+                addPanel(new RegisterView(LoginView.this));
             }
         });
+    }
+
+    public void addPanel(JPanel panel) {
+        getContentPane().removeAll();
+        getContentPane().add(panel);
+        getContentPane().revalidate();
+        getContentPane().repaint();
+        panel.setVisible(true);
     }
 
     private void initComponents() {
@@ -160,6 +179,7 @@ public class LoginView extends JFrame {
         setSize(600, 650);
         setLocationRelativeTo(null);
         setLayout(null);
+        setResizable(false);
         panel.setLayout(null);
         add(panel);
     }

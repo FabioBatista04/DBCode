@@ -3,6 +3,7 @@ package br.edu.dombosco.dbcode;
 import br.edu.dombosco.dbcode.accessManagment.controller.EmailController;
 import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
 import br.edu.dombosco.dbcode.accessManagment.view.LoginView;
+import br.edu.dombosco.dbcode.requisitos.controller.ProjetoController;
 import br.edu.dombosco.dbcode.requisitos.controller.RequisitosController;
 import br.edu.dombosco.dbcode.bugs.controller.BugController;
 import org.springframework.boot.CommandLineRunner;
@@ -18,8 +19,10 @@ public class DBCodeApplication {
 		new SpringApplicationBuilder(DBCodeApplication.class).headless(false).run(args);
 	}
 	@Bean
-	CommandLineRunner runner(UserController userController, EmailController emailController, BugController bugController, RequisitosController requisitosController) {
-		return args -> SwingUtilities.invokeLater(() -> new LoginView(userController, emailController, requisitosController, bugController));
+	CommandLineRunner runner(UserController userController, EmailController emailController, BugController bugController,
+							 RequisitosController requisitosController, ProjetoController projetoController) {
+		return args -> SwingUtilities.invokeLater(() ->
+				new LoginView(userController, emailController, requisitosController, bugController, projetoController));
 	}
 
 }

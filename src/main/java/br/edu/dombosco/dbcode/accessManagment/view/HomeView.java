@@ -1,10 +1,11 @@
 package br.edu.dombosco.dbcode.accessManagment.view;
 
-import br.edu.dombosco.dbcode.bugs.view.BugHomeView;
 import br.edu.dombosco.dbcode.bugs.view.BugQueryView;
 import br.edu.dombosco.dbcode.bugs.view.BugRegisterView;
 import br.edu.dombosco.dbcode.bugs.view.BugRelatoryView;
+import br.edu.dombosco.dbcode.requisitos.controller.ProjetoController;
 import br.edu.dombosco.dbcode.requisitos.controller.RequisitosController;
+import br.edu.dombosco.dbcode.requisitos.view.ProjetoView;
 import br.edu.dombosco.dbcode.requisitos.view.RequisitoView;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,6 +13,9 @@ import br.edu.dombosco.dbcode.bugs.controller.BugController;
 import br.edu.dombosco.dbcode.accessManagment.model.User;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 @Slf4j
 public class HomeView extends JFrame {
@@ -39,24 +43,61 @@ public class HomeView extends JFrame {
     private JMenuItem subMenuConfig;
     private JMenuItem subMenuConfig2;
 
+    private JMenu exit;
+
     private ImageIcon imageIcon;
     private JLabel image;
 
 
     private RequisitosController requisitosController;
     private BugController bugController;
+    private ProjetoController projetoController;
     private User user;
 
     public HomeView(LoginView loginView){
         this.requisitosController = loginView.getRequisitosController();
         this.bugController = loginView.getBugController();
         this.user = loginView.getUser();
+        this.projetoController = loginView.getProjetoController();
+
         setLayoutHome();
         initComponents();
         configComponents();
 
         setListenersBugs();
         setListenersRequisitos();
+        setListenersHome();
+        setListenerPojetos();
+    }
+
+    private void setListenerPojetos() {
+        subMenuRequisitosProjeto.addActionListener(e -> {
+            log.info("Projeto Menu Item clicked");
+            addPanel(new ProjetoView(projetoController));
+        });
+    }
+
+    private void setListenersHome() {
+        home.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                log.info("Home Menu Item clicked");
+                getContentPane().removeAll();
+                getContentPane().revalidate();
+                getContentPane().repaint();
+                add(image);
+                image.setVisible(true);
+            }
+        });
+        exit.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                log.info("Exit Menu Item clicked");
+                System.exit(0);
+            }
+        });
     }
 
     private void setListenersRequisitos() {
@@ -83,13 +124,28 @@ public class HomeView extends JFrame {
         });
     }
 
-    private void addPanel(JPanel Panel) {
+    private void addPanel(JPanel panel) {
         getContentPane().removeAll();
-        getContentPane().add(Panel);
+        getContentPane().add(panel);
         getContentPane().revalidate();
         getContentPane().repaint();
-        Panel.setVisible(true);
-        image.setVisible(false);
+        panel.add(image);
+        for( Component compo : panel.getComponents() ){
+            if( compo instanceof JLabel ){
+
+                compo.setForeground(new Color(245,245,245));
+            }
+        }
+        for( Component compo : panel.getComponents() ){
+            if( compo instanceof JRadioButton ){
+                ((JRadioButton) compo).setOpaque(false);
+                compo.setBackground(null);
+                compo.setForeground(new Color(245,245,245));
+            }
+        }
+
+        panel.setVisible(true);
+        //image.setVisible(false);
     }
 
     private void setLayoutHome() {
@@ -97,7 +153,9 @@ public class HomeView extends JFrame {
         setSize(800, 650);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
         setVisible(true);
+
     }
 
     private void configComponents() {
@@ -108,7 +166,9 @@ public class HomeView extends JFrame {
         menu.add(requisitos);
         menu.add(bugs);
         menu.add(test);
-        menu.add(config);
+        //menu.add(config);
+        menu.add(Box.createHorizontalGlue());
+        menu.add(exit);
 
         bugs.add(subMenuBugCadastro);
         bugs.add(subMenuBugConsulta);
@@ -118,8 +178,8 @@ public class HomeView extends JFrame {
         test.add(subMenuTest);
         test.add(subMenutest2);
 
-        config.add(subMenuConfig);
-        config.add(subMenuConfig2);
+        //config.add(subMenuConfig);
+        //config.add(subMenuConfig2);
 
         requisitos.add(subMenuRequisitos);
         requisitos.add(subMenuRequisitosProjeto);
@@ -146,7 +206,8 @@ public class HomeView extends JFrame {
         requisitos = new JMenu("Requisitos");
         bugs = new JMenu("Bugs");
         test = new JMenu("Test");
-        config = new JMenu("Configurações");
+        //config = new JMenu("Configurações");
+        exit = new JMenu("Sair");
 
         subMenuRequisitos = new JMenuItem("Requisito");
         subMenuRequisitosProjeto = new JMenuItem("Projeto");
@@ -156,11 +217,11 @@ public class HomeView extends JFrame {
         subMenuBugConsulta = new JMenuItem("Consulta");
         subMenuBugRelatorio = new JMenuItem("Relatorio");
 
-        subMenuTest = new JMenuItem("Cadastrar");
-        subMenutest2 = new JMenuItem("Editar");
+        subMenuTest = new JMenuItem("Plano");
+        subMenutest2 = new JMenuItem("Caso");
 
-        subMenuConfig = new JMenuItem("Cadastrar");
-        subMenuConfig2 = new JMenuItem("Editar");
+//        subMenuConfig = new JMenuItem("Cadastrar");
+//        subMenuConfig2 = new JMenuItem("Editar");
 
         imageIcon = new ImageIcon("src/main/resources/images/backend_opaco.png");
         image = new JLabel();

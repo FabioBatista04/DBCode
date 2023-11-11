@@ -136,7 +136,7 @@ public class BugRelatoryView extends JPanel {
 
     private void initComponents() {
         //setTitle("Relatório de Bugs");
-        setSize(700, 600);
+        setSize(800, 650);
        // setLocationRelativeTo(null);
         setLayout(null);
 

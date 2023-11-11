@@ -32,8 +32,29 @@ public class RequisitoView extends JPanel {
         setPosition();
         addComponents();
         setListeners();
+        initpopulateTable();
         updateUI();
     }
+
+    private void initpopulateTable() {
+        var requisitos = requisitosController.buscar10Primeiros();
+        if(requisitos != null && !requisitos.isEmpty()){
+            requisitos.forEach(this::populateTable);
+        }
+    }
+
+    private void populateTable(Requisito requisito) {
+        model.addRow( new Object[]{
+                        requisito.getId(),
+                        requisito.getNome(),
+                        requisito.getQualificacao(),
+                        requisito.getDescricao(),
+                        requisito.getFile_especificacao(),
+                        requisito.getFile_desenho()
+                }
+        );
+    }
+
     public void updateUI() {
         validate();
         repaint();
@@ -119,32 +140,28 @@ public class RequisitoView extends JPanel {
         });
 
         findButton.addActionListener(e -> {
-            log.info(findFiend.getText());
-            try{
-
-                Long id = Long.valueOf(findFiend.getText());
-                log.info(String.valueOf(id));
-                var retorno = requisitosController.findRequisitoModelById(id);
-                log.info("retorno {}", retorno);
-                for (int i = model.getRowCount() - 1; i >= 0; i--) {
-                    model.removeRow(i);
-                }
-                if(retorno != null){
-                    model.addRow( new Object[]{
-                                    retorno.getId(),
-                                    retorno.getNome(),
-                                    retorno.getQualificacao(),
-                                    retorno.getDescricao(),
-                                    retorno.getFile_especificacao(),
-                                    retorno.getFile_desenho()
-                            }
-                    );
-                }
-            }catch (Exception ex){
-                log.error(ex.getMessage());
+            if(findFiend.getText().isEmpty()){
+                initpopulateTable();
+                findFiend.setText("");
+                return;
             }
+            var requisitos = requisitosController.buscarPorTitulo(findFiend.getText());
+            if(requisitos != null && !requisitos.isEmpty()){
+                clearTable();
+                requisitos.forEach(this::populateTable);
+            }else {
+                try {
+                    var requisito = requisitosController.findRequisitoModelById(Long.parseLong(findFiend.getText()));
+                    if(requisito != null){
+                        clearTable();
+                        populateTable(requisito);
+                    }
 
-
+                }catch (Exception ex){
+                    JOptionPane.showMessageDialog(null, "Nenhum requisito encontrado!");
+                }
+            }
+            findFiend.setText("");
         });
 
         editButton.addActionListener(e -> {
@@ -289,7 +306,7 @@ public class RequisitoView extends JPanel {
         jMenuBar1.add(requisitos);
         jLabel4.setText("Qualificação:");
         saveButon.setText("Salvar");
-        functional.setText("Funcional");  
+        functional.setText("Funcional");
         notFunctionl.setText("Não Funcional");
         editButton.setText("Editar");
         removeButton.setText("Excluir");
