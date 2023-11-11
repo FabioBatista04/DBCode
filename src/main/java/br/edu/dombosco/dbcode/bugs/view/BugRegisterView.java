@@ -6,7 +6,7 @@ import br.edu.dombosco.dbcode.bugs.model.Bug;
 import javax.swing.*;
 import java.time.LocalDate;
 
-public class BugRegisterView extends JFrame {
+public class BugRegisterView extends JPanel {
     private JLabel lbl_titulo_bug;
     private JLabel lbl_status_bug;
     private JLabel lbl_descricao_bug;
@@ -28,11 +28,11 @@ public class BugRegisterView extends JFrame {
 
     public BugRegisterView(BugController bugController) {
         this.bugController = bugController;
-        setLocationRelativeTo(null);
+        //setLocationRelativeTo(null);
         initComponents();
         setupListeners();
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
 
@@ -131,9 +131,9 @@ public class BugRegisterView extends JFrame {
     }
 
     private void initComponents() {
-        setTitle("Cadastro de Bug");
+        //setTitle("Cadastro de Bug");
         setSize(700, 600);
-        setLocationRelativeTo(null);
+        //setLocationRelativeTo(null);
         setLayout(null);
 
         lbl_titulo_bug = new JLabel("Título do Bug:");
@@ -168,7 +168,7 @@ public class BugRegisterView extends JFrame {
 
         btn_limpar_campos_bug = new JButton("Limpar");
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
 

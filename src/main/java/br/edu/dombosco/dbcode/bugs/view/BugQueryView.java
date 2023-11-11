@@ -8,7 +8,7 @@ import javax.swing.*;
 import static br.edu.dombosco.dbcode.accessManagment.model.Profile.DEV;
 import static br.edu.dombosco.dbcode.accessManagment.model.Profile.TEST;
 
-public class BugQueryView extends JFrame {
+public class BugQueryView extends JPanel {
     private JLabel lbl_id_bug;
     private JLabel lbl_titulo_bug;
     private JLabel lbl_status_bug;
@@ -38,11 +38,11 @@ public class BugQueryView extends JFrame {
     public BugQueryView(BugController bugController, User user) {
         this.bugController = bugController;
         this.user = user;
-        setLocationRelativeTo(null);
+        //setLocationRelativeTo(null);
         initComponents();
         setupListeners();
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+       // setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     private void setupListeners(){
@@ -211,9 +211,9 @@ public class BugQueryView extends JFrame {
     }
 
     private void initComponents() {
-        setTitle("Consulta de Bug");
+        //setTitle("Consulta de Bug");
         setSize(700, 600);
-        setLocationRelativeTo(null);
+        //setLocationRelativeTo(null);
         setLayout(null);
 
         lbl_id_bug = new JLabel("Id do Bug:");
@@ -254,7 +254,7 @@ public class BugQueryView extends JFrame {
         btn_deletar_bug = new JButton("Excluir");
         btn_editar_bug = new JButton("Editar");
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
 }

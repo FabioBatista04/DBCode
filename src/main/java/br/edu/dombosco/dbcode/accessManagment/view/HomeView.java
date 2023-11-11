@@ -1,13 +1,25 @@
 package br.edu.dombosco.dbcode.accessManagment.view;
 
+import br.edu.dombosco.dbcode.bugs.view.BugHomeView;
+import br.edu.dombosco.dbcode.bugs.view.BugQueryView;
+import br.edu.dombosco.dbcode.bugs.view.BugRegisterView;
+import br.edu.dombosco.dbcode.bugs.view.BugRelatoryView;
+import br.edu.dombosco.dbcode.requisitos.controller.RequisitosController;
+import br.edu.dombosco.dbcode.requisitos.view.RequisitoView;
+import lombok.extern.slf4j.Slf4j;
+
 import br.edu.dombosco.dbcode.bugs.controller.BugController;
 import br.edu.dombosco.dbcode.accessManagment.model.User;
 import br.edu.dombosco.dbcode.bugs.view.BugHomeView;
 
 import javax.swing.*;
-import javax.swing.plaf.PanelUI;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
+@Slf4j
 public class HomeView extends JFrame {
 
 
@@ -16,6 +28,13 @@ public class HomeView extends JFrame {
     private JMenuItem subMenuRequisitos;
     private JMenuItem subMenuRequisitos2;
     private JMenu bugs;
+    private JMenuItem subMenuBugsmenu;
+
+    private JMenuItem subMenuBugCadastro;
+    private JMenuItem subMenuBugConsulta;
+    private JMenuItem subMenuBugRelatorio;
+
+    private JMenuItem subMenuBugs2;
     private JMenu test;
     private JMenuItem subMenuTest;
     private JMenuItem subMenutest2;
@@ -26,48 +45,58 @@ public class HomeView extends JFrame {
     private ImageIcon imageIcon;
     private JLabel image;
 
+
+    private RequisitosController requisitosController;
     private BugController bugController;
     private BugHomeView subMenuBugs;
     private User user;
+    private List<JPanel> panels = new ArrayList<>();
 
-    public HomeView(BugController bugController, User user){
-        this.bugController = bugController;
-        this.user = user;
+    public HomeView(LoginView loginView){
+        this.requisitosController = loginView.getRequisitosController();
+        this.bugController = loginView.getBugController();
+        this.user = loginView.getUser();
         setLayoutHome();
-
         initComponents();
-
         configComponents();
+        setListeners();
 
 
-//        JTabbedPane tabbedPane = new JTabbedPane();
-//
-//        JPanel panel1 = new JPanel(new BorderLayout());
-//        panel1.add(new JLabel("Conteudo Requisitos"));
-//        tabbedPane.addTab("Requisitos", panel1);
-//
-//        JPanel panel2 = new JPanel(new BorderLayout());
-//        panel2.add(new JLabel("Conteudo Testes"));
-//        tabbedPane.addTab("Testes", panel2);
-//
-//        JPanel panel3 = new JPanel(new BorderLayout());
-//        panel3.add(new JLabel("Conteudo Bugs"));
-//        tabbedPane.addTab("Bugs", panel3);
-//
-//        JPanel panel4 = new JPanel(new BorderLayout());
-//        panel4.add(new JLabel("Conteudo Configurações"));
-//        tabbedPane.addTab("Configurações", panel4);
-//
-//        frame.add(tabbedPane, BorderLayout.CENTER);
-//
-//        JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-//        JButton exitButton = new JButton("Sair");
-//        exitButton.addActionListener(e -> System.exit(0)); // Sai do programa ao clicar
-//        footerPanel.add(exitButton);
-//
-//        frame.add(footerPanel, BorderLayout.PAGE_END);
-//
-//        frame.setVisible(true);
+        setListenersBugs();
+    }
+
+    private void setListenersBugs() {
+        subMenuBugCadastro.addActionListener(e -> {
+            log.info("Cadastro Menu Item clicked");
+            addPanel(new BugRegisterView(bugController));
+        });
+
+        subMenuBugConsulta.addActionListener(e -> {
+            log.info("Consulta Menu Item clicked");
+            addPanel(new BugQueryView(bugController, user));
+        });
+
+        subMenuBugRelatorio.addActionListener(e -> {
+            log.info("Relatorio Menu Item clicked");
+            addPanel(new BugRelatoryView(bugController));
+        });
+    }
+
+    private void addPanel(JPanel Panel) {
+        getContentPane().removeAll();
+        getContentPane().add(Panel);
+        getContentPane().revalidate();
+        getContentPane().repaint();
+        Panel.setVisible(true);
+        image.setVisible(false);
+    }
+
+    private void setListeners() {
+        subMenuRequisitos.addActionListener(e -> {
+            log.info("Requisitos Menu Item clicked");
+            setVisible(false);
+            new RequisitoView(requisitosController).setVisible(true);
+        });
     }
 
     private void setLayoutHome() {
@@ -81,35 +110,26 @@ public class HomeView extends JFrame {
     private void configComponents() {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        requisitos.setText("Requisitos");
 
-        requisitos.add(subMenuRequisitos);
-
-        requisitos.add(subMenuRequisitos2);
 
         menu.add(requisitos);
-
-        bugs.setText("Bugs");
-
-        bugs.add(subMenuBugs);
-
         menu.add(bugs);
+        menu.add(test);
+        menu.add(config);
 
-        test.setText("Test");
+        bugs.add(subMenuBugCadastro);
+        bugs.add(subMenuBugConsulta);
+        bugs.add(subMenuBugRelatorio);
+
 
         test.add(subMenuTest);
-
         test.add(subMenutest2);
 
-        menu.add(test);
-
-        config.setText("Configurações");
-
         config.add(subMenuConfig);
-
         config.add(subMenuConfig2);
 
-        menu.add(config);
+        requisitos.add(subMenuRequisitos);
+        requisitos.add(subMenuRequisitos2);
 
         setJMenuBar(menu);
         image.setIcon(imageIcon);
@@ -129,18 +149,31 @@ public class HomeView extends JFrame {
     private void initComponents() {
 
         menu = new JMenuBar();
-        requisitos = new JMenu();
+        requisitos = new JMenu("Requisitos");
+        bugs = new JMenu("Bugs");
+        test = new JMenu("Test");
+        config = new JMenu("Configurações");
+
         subMenuRequisitos = new JMenuItem("Cadastrar");
         subMenuRequisitos2 = new JMenuItem("Editar");
-        bugs = new JMenu();
+
+
+        subMenuBugCadastro = new JMenuItem("Cadastro");
+        subMenuBugConsulta = new JMenuItem("Consulta");
+        subMenuBugRelatorio = new JMenuItem("Relatorio");
+
+
+
         subMenuBugs = new BugHomeView(bugController, user);
-        test = new JMenu();
+
+
         subMenuTest = new JMenuItem("Cadastrar");
         subMenutest2 = new JMenuItem("Editar");
-        config = new JMenu();
+
         subMenuConfig = new JMenuItem("Cadastrar");
         subMenuConfig2 = new JMenuItem("Editar");
-        imageIcon = new ImageIcon("src/main/java/br/edu/dombosco/dbcode/accessManagment/view/backend_opaco.png");
+
+        imageIcon = new ImageIcon("src/main/resources/images/backend_opaco.png");
         image = new JLabel();
 
     }

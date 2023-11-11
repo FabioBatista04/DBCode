@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class BugRelatoryView extends JFrame {
+public class BugRelatoryView extends JPanel {
     private JLabel lbl_status;
     private JLabel lbl_titulo;
     private JComboBox<String> txt_status;
@@ -28,11 +28,11 @@ public class BugRelatoryView extends JFrame {
 
     public BugRelatoryView(BugController bugController) {
         this.bugController = bugController;
-        setLocationRelativeTo(null);
+        //setLocationRelativeTo(null);
         initComponents();
         setupListeners();
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     private void setupListeners() {
@@ -135,9 +135,9 @@ public class BugRelatoryView extends JFrame {
     }
 
     private void initComponents() {
-        setTitle("Relatório de Bugs");
+        //setTitle("Relatório de Bugs");
         setSize(700, 600);
-        setLocationRelativeTo(null);
+       // setLocationRelativeTo(null);
         setLayout(null);
 
         lbl_titulo = new JLabel("Relatório de Bugs");
@@ -152,7 +152,7 @@ public class BugRelatoryView extends JFrame {
 
         btn_relatorio_csv = new JButton("Relatório em CSV");
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
 }

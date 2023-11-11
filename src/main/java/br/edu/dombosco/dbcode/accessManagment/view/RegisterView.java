@@ -15,33 +15,29 @@ import java.util.ArrayList;
 
 public class RegisterView extends JFrame {
     private final JPanel panel = new JPanel();
-
-
     private final JTextField user = new JTextField("Digite seu nome de usuário");
     private final JTextField email = new JTextField("Digite seu email");
     private final JPasswordField password = new JPasswordField("Digite sua senha");
     private final JPasswordField replyPassword = new JPasswordField("Digite novamente sua senha");
     private final JLabel labelProfile = new JLabel("Selecione o perfil:");
     private final JComboBox<Profile> profileBox = new JComboBox<>(Profile.values());
-
     private GenericFocusAdapter focus;
-
     private JButton register = new JButton("Cadastrar");
     private JButton cancel = new JButton("Cancelar");
-    private final ImageIcon imageIcon = new ImageIcon("src/main/java/br/edu/dombosco/dbcode/accessManagment/view/image.png");
+    private final ImageIcon imageIcon = new ImageIcon("src/main/resources/images/image.png");
     private final JLabel image = new JLabel();
     private UserController userController;
+    private LoginView loginView;
     private EmailController emailController;
     private BugController bugController;
 
-    public RegisterView(UserController userController, EmailController emailController, BugController bugController) {
-        this.userController = userController;
-        this.emailController = emailController;
-        this.bugController = bugController;
+    public RegisterView(LoginView loginView) {
+        this.loginView = loginView;
+        this.userController = loginView.getUserController();
+        this.bugController = loginView.getBugController();
         setLocationRelativeTo(null);
         initializeComponents();
         setupListeners();
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -51,7 +47,7 @@ public class RegisterView extends JFrame {
         image.setBounds(0, 0, 600, 650);
         panel.add(image);
 
-        register.setBounds(430, 490, 100, 30);
+        register.setBounds(430, 490, 110, 30);
         register.setBackground(new Color(8, 138, 179));
         register.setForeground(new Color(255, 255, 255));
         register.setBorderPainted(false);
@@ -97,7 +93,7 @@ public class RegisterView extends JFrame {
         panel.add(profileBox);
         add(profileBox);
 
-        cancel.setBounds(320, 490, 90, 30);
+        cancel.setBounds(320, 490, 100, 30);
         panel.add(cancel);
         add(cancel);
 
@@ -132,7 +128,7 @@ public class RegisterView extends JFrame {
             if(userCreated.getFields().isEmpty()){
                 JOptionPane.showMessageDialog(this, "Registro efetuado com sucesso!");
                 setVisible(false);
-                new LoginView(userController, emailController, bugController).setVisible(true);
+                this.loginView.setVisible(true);
             }else {
                 String mensagem = "Por favor, verifique os seguintes campos: " + String.join(", ", userCreated.getFields());
                 JOptionPane.showMessageDialog(RegisterView.this, mensagem,"Valide Campos",JOptionPane.WARNING_MESSAGE);
@@ -142,7 +138,7 @@ public class RegisterView extends JFrame {
 
         cancel.addActionListener(e -> {
                 setVisible(false);
-                new LoginView(userController, emailController, bugController).setVisible(true);
+                loginView.setVisible(true);
         });
     }
 

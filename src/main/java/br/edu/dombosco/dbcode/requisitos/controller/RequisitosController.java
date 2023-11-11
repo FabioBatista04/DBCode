@@ -1,46 +1,32 @@
 package br.edu.dombosco.dbcode.requisitos.controller;
 
-import lombok.AllArgsConstructor;
+import br.edu.dombosco.dbcode.requisitos.model.Requisito;
+import br.edu.dombosco.dbcode.requisitos.repository.RequisitosRepository;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Log4j2
 @Service
-@AllArgsConstructor
 public class RequisitosController {
-    private int id;
-    private String nome;
-    private String qualificacao;
-    private String descricao;
-    private String file_especificacao;
-    private String file_desenho;
 
-    public RequisitosController(){
-        this.id = 0;
-        this.nome = "";
-        this.qualificacao = "";
-        this.descricao = "";
-        this.file_especificacao = "";
-        this.file_desenho = "";
+    @Autowired
+    private RequisitosRepository repository;
+
+    public Requisito salvar(Requisito requisito) {
+        return repository.save(requisito);
     }
 
-    public void salvar(int id, String nome, String qualificacao, String descricao, String fileEspecificacao, String fileDesenho) {
-        this.id = id;
-        this.nome = nome;
-        this.qualificacao = qualificacao;
-        this.descricao = descricao;
-        this.file_especificacao = fileEspecificacao;
-        this.file_desenho = fileDesenho;
+    public Requisito editar(Requisito requisito) {
+        return repository.save(requisito);
     }
 
-    public void editar(int id, String nome, String qualificacao, String descricao, String fileEspecificacao, String fileDesenho) {
-        this.id = id;
-        this.nome = nome;
-        this.qualificacao = qualificacao;
-        this.descricao = descricao;
-        this.file_especificacao = fileEspecificacao;
-        this.file_desenho = fileDesenho;
+    public Requisito findRequisitoModelById(Long id){
+        return repository.findRequisitoModelById(id);
     }
-    
-    
+
+
+    public void delete(Long objectId) {
+        repository.deleteById(objectId);
+    }
 }
