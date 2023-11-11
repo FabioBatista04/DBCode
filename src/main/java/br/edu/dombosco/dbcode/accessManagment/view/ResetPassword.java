@@ -12,9 +12,8 @@ import java.awt.event.*;
 
 @Slf4j
 
-public class ResetPassword extends JFrame {
+public class ResetPassword extends JPanel {
 
-    private JPanel panel = new JPanel();
     private JTextField email = new JTextField("Digite seu email cadastrado");
     private JTextField code = new JTextField("Digite o código recebido");
     private JPasswordField password = new JPasswordField("Digite a nova senha");
@@ -34,71 +33,42 @@ public class ResetPassword extends JFrame {
     public ResetPassword(LoginView loginView) {
         this.emailController = loginView.getEmailController();
         this.userController = loginView.getUserController();
-        setVisible(true);
-        setTitle("Password Reset");
-        setSize(600, 650);
-        setLocationRelativeTo(null);
-        setLayout(null);
-        panel.setLayout(null);
 
+        addComponents();
+        setSize(600, 650);
+        setLayout(null);
 
         email.setBounds(330, 140, 210, 30);
         email.setForeground(new Color(153, 153, 153));
         email.putClientProperty("defaultText","Digite seu email cadastrado");
         email.addFocusListener(focus);
-        panel.add(email);
-        add(email);
 
         code.setBounds(330, 230, 210, 30);
         code.setForeground(new Color(153, 153, 153));
         code.putClientProperty("defaultText","Digite o código recebido");
         code.addFocusListener(focus);
-        panel.add(code);
-        add(code);
 
         password.setBounds(330, 300, 210, 30);
         password.setForeground(new Color(153, 153, 153));
         password.putClientProperty("defaultText","Digite a nova senha");
         password.addFocusListener(focus);
         password.setEchoChar((char) 0);
-        panel.add(password);
-        add(password);
 
         replyPassword.setBounds(330, 350, 210, 30);
         replyPassword.setForeground(new Color(153, 153, 153));
         replyPassword.putClientProperty("defaultText","Repita a nova senha");
         replyPassword.addFocusListener(focus);
         replyPassword.setEchoChar((char) 0);
-        panel.add(replyPassword);
-        add(replyPassword);
 
         sendCode.setBounds(370, 410, 140, 23);
-        panel.add(sendCode);
-        add(sendCode);
 
         savePassword.setBounds(440, 470, 100, 23);
-        panel.add(savePassword);
-        add(savePassword);
 
         cancel.setBounds(330, 470, 100, 23);
-        panel.add(cancel);
-        add(cancel);
-
 
         image.setBounds(0, 0, 600, 650);
-        panel.add(image);
-        add(image);
 
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(panel, GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(panel, GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
-        );
+
 
         sendCode.addMouseListener(new MouseAdapter() {
             @Override
@@ -154,19 +124,20 @@ public class ResetPassword extends JFrame {
         });
 
         cancel.addActionListener(e -> {
-            setVisible(false);
-            loginView.setVisible(true);
+            loginView.addPanel(loginView.getPanel());
         });
 
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-                image.requestFocusInWindow();
-            }
-        });
+    }
 
-
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    private void addComponents() {
+        add(email);
+        add(code);
+        add(password);
+        add(replyPassword);
+        add(sendCode);
+        add(savePassword);
+        add(cancel);
+        add(image);
     }
 
 }
