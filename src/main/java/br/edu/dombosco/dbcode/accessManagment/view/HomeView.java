@@ -10,34 +10,31 @@ import lombok.extern.slf4j.Slf4j;
 
 import br.edu.dombosco.dbcode.bugs.controller.BugController;
 import br.edu.dombosco.dbcode.accessManagment.model.User;
-import br.edu.dombosco.dbcode.bugs.view.BugHomeView;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 public class HomeView extends JFrame {
 
 
     private JMenuBar menu;
+
+    private JMenu home;
+
     private JMenu requisitos;
     private JMenuItem subMenuRequisitos;
-    private JMenuItem subMenuRequisitos2;
-    private JMenu bugs;
-    private JMenuItem subMenuBugsmenu;
+    private JMenuItem subMenuRequisitosProjeto;
 
+    private JMenu bugs;
     private JMenuItem subMenuBugCadastro;
     private JMenuItem subMenuBugConsulta;
     private JMenuItem subMenuBugRelatorio;
 
-    private JMenuItem subMenuBugs2;
+
     private JMenu test;
     private JMenuItem subMenuTest;
     private JMenuItem subMenutest2;
+
     private JMenu config;
     private JMenuItem subMenuConfig;
     private JMenuItem subMenuConfig2;
@@ -48,9 +45,7 @@ public class HomeView extends JFrame {
 
     private RequisitosController requisitosController;
     private BugController bugController;
-    private BugHomeView subMenuBugs;
     private User user;
-    private List<JPanel> panels = new ArrayList<>();
 
     public HomeView(LoginView loginView){
         this.requisitosController = loginView.getRequisitosController();
@@ -59,10 +54,16 @@ public class HomeView extends JFrame {
         setLayoutHome();
         initComponents();
         configComponents();
-        setListeners();
-
 
         setListenersBugs();
+        setListenersRequisitos();
+    }
+
+    private void setListenersRequisitos() {
+        subMenuRequisitos.addActionListener(e -> {
+            log.info("Requisitos Menu Item clicked");
+            addPanel(new RequisitoView(requisitosController));
+        });
     }
 
     private void setListenersBugs() {
@@ -91,17 +92,9 @@ public class HomeView extends JFrame {
         image.setVisible(false);
     }
 
-    private void setListeners() {
-        subMenuRequisitos.addActionListener(e -> {
-            log.info("Requisitos Menu Item clicked");
-            setVisible(false);
-            new RequisitoView(requisitosController).setVisible(true);
-        });
-    }
-
     private void setLayoutHome() {
         setTitle("DBCode");
-        setSize(800, 600);
+        setSize(800, 650);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -111,7 +104,7 @@ public class HomeView extends JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
 
-
+        menu.add(home);
         menu.add(requisitos);
         menu.add(bugs);
         menu.add(test);
@@ -129,7 +122,7 @@ public class HomeView extends JFrame {
         config.add(subMenuConfig2);
 
         requisitos.add(subMenuRequisitos);
-        requisitos.add(subMenuRequisitos2);
+        requisitos.add(subMenuRequisitosProjeto);
 
         setJMenuBar(menu);
         image.setIcon(imageIcon);
@@ -149,23 +142,19 @@ public class HomeView extends JFrame {
     private void initComponents() {
 
         menu = new JMenuBar();
+        home = new JMenu("Home");
         requisitos = new JMenu("Requisitos");
         bugs = new JMenu("Bugs");
         test = new JMenu("Test");
         config = new JMenu("Configurações");
 
-        subMenuRequisitos = new JMenuItem("Cadastrar");
-        subMenuRequisitos2 = new JMenuItem("Editar");
+        subMenuRequisitos = new JMenuItem("Requisito");
+        subMenuRequisitosProjeto = new JMenuItem("Projeto");
 
 
         subMenuBugCadastro = new JMenuItem("Cadastro");
         subMenuBugConsulta = new JMenuItem("Consulta");
         subMenuBugRelatorio = new JMenuItem("Relatorio");
-
-
-
-        subMenuBugs = new BugHomeView(bugController, user);
-
 
         subMenuTest = new JMenuItem("Cadastrar");
         subMenutest2 = new JMenuItem("Editar");

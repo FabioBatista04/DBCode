@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package br.edu.dombosco.dbcode.requisitos.view;
 
 import br.edu.dombosco.dbcode.requisitos.controller.RequisitosController;
@@ -13,16 +9,15 @@ import javax.swing.table.DefaultTableModel;
 import java.io.File;
 
 @Slf4j
-public class RequisitoView extends JFrame {
-    private JMenu Requisitos, jMenu2;
-    private JTextField especificationField, fieldTittle, findFiend, ucField,JTextField;
+public class RequisitoView extends JPanel {
+    private JMenu requisitos, jMenu2;
+    private JTextField especificationField, fieldTittle, findFiend, ucField;
     private JRadioButton functional;
     private ButtonGroup funcionalGroup;
     private JButton findButton,editButton, fileButton,fileButtonUC, printButton, removeButton,saveButon;
-    private JLabel jLabel1,jLabel2, jLabel3, jLabel4, jLabel5, jLabel6;
+    private JLabel jLabel2, jLabel3, jLabel4, jLabel5, jLabel6;
     private JMenuBar jMenuBar1;
-    private JPanel jPanel1;
-    private JScrollPane jScrollPane1, jScrollPane2, jScrollPane3;
+    private JScrollPane jScrollPaneTableInternal, jScrollPaneTable, jScrollPane3;
     private JTable jTable1;
     private JTextArea jTextArea2;
     private JRadioButton notFunctionl;
@@ -33,10 +28,67 @@ public class RequisitoView extends JFrame {
 
     public RequisitoView(RequisitosController requisitosController) {
         this.requisitosController = requisitosController;
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initComponents();
+        setPosition();
+        addComponents();
         setListeners();
+        updateUI();
+    }
+    public void updateUI() {
+        validate();
+        repaint();
+    }
+    private void addComponents(){
+        funcionalGroup.add(functional);
+        funcionalGroup.add(notFunctionl);
+        add(jLabel2);
+        add(fieldTittle);
+        add(jLabel3);
+        add(jLabel4);
+
+
+        add(fileButton);
+        add(fileButtonUC);
+        add(especificationField);
+        add(ucField);
+        add(findFiend);
+        add(findButton);
+        add(saveButon);
+        add(functional);
+        add(notFunctionl);
+        add(editButton);
+        add(removeButton);
+        add(printButton);
+        add(jScrollPaneTableInternal);
+        //add(textAreaDescription);
+        add(jScrollPane3);
+    }
+
+
+    private void setPosition() {
+        jScrollPaneTableInternal.setBounds(20, 290, 740, 250);
+        jLabel2.setBounds(10, 20, 90, 18);
+        jLabel3.setBounds(10, 70, 90, 18);
+        fieldTittle.setBounds(110, 20, 650, 24);
+        jScrollPane3.setBounds(110, 70, 274, 96);
+        textAreaDescription.setBounds(110, 70, 274, 96);
+        fileButton.setBounds(400, 70, 100, 24);
+        fileButtonUC.setBounds(400, 140, 100, 24);
+        especificationField.setBounds(520, 70, 240, 24);
+        ucField.setBounds(520, 140, 240, 24);
+        findFiend.setBounds(20, 250, 630, 24);
+        findButton.setBounds(670, 250, 90, 24);
+        jScrollPaneTable.setBounds(10, 240, 760, 310);
+        jLabel4.setBounds(10, 200, 90, 20);
+        saveButon.setBounds(670, 200, 90, 24);
+        functional.setBounds(100, 200, 110, 22);
+        notFunctionl.setBounds(260, 200, 140, 22);
+        editButton.setBounds(230, 560, 80, 24);
+        removeButton.setBounds(370, 560, 90, 24);
+        printButton.setBounds(520, 560, 100, 24);
+        jLabel5.setBounds(410, 120, 140, 18);
+        jLabel6.setBounds(400, 50, 180, 18);
+
     }
 
     private void setListeners() {
@@ -94,6 +146,7 @@ public class RequisitoView extends JFrame {
 
 
         });
+
         editButton.addActionListener(e -> {
             int selectedRow = jTable1.getSelectedRow();
             if(selectedRow >= 0){
@@ -127,6 +180,7 @@ public class RequisitoView extends JFrame {
 
 
         });
+
         removeButton.addActionListener(e -> {
             int selectedRow = jTable1.getSelectedRow();
             if(selectedRow >= 0){
@@ -175,22 +229,21 @@ public class RequisitoView extends JFrame {
     }
 
     private void initComponents() {
+        setSize(850, 650);
+        setLayout(null);
 
-        jPanel1 = new JPanel();
-        jScrollPane1 = new JScrollPane();
-        jTable1 = new JTable();
         jLabel2 = new JLabel();
         jLabel3 = new JLabel();
         fieldTittle = new JTextField();
-        jScrollPane3 = new JScrollPane();
         textAreaDescription = new JTextArea();
+        jScrollPane3 = new JScrollPane(textAreaDescription);
         fileButton = new JButton();
         fileButtonUC = new JButton();
         especificationField = new JTextField();
         ucField = new JTextField();
         findFiend = new JTextField();
         findButton = new JButton();
-        jScrollPane2 = new JScrollPane();
+        jScrollPaneTable = new JScrollPane();
         jTextArea2 = new JTextArea();
         jLabel4 = new JLabel();
         saveButon = new JButton();
@@ -201,137 +254,50 @@ public class RequisitoView extends JFrame {
         printButton = new JButton();
         jLabel5 = new JLabel();
         jLabel6 = new JLabel();
-        jLabel1 = new JLabel();
         jMenuBar1 = new JMenuBar();
-        Requisitos = new JMenu();
+        requisitos = new JMenu();
         jMenu2 = new JMenu();
         model = new DefaultTableModel(new Object [][] {},
                 new String [] {"id", "Nome Requisito", "Qualificação","Descrição", "Anexos Especificação","Anexo Desenho UC"});
         funcionalGroup = new ButtonGroup();
-        funcionalGroup.add(functional);
-        funcionalGroup.add(notFunctionl);
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setLayout(null);
+
+        jTable1 = new JTable();
 
         jTable1.setModel(model);
 
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPaneTableInternal = new JScrollPane(jTable1);
 
-        jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(20, 290, 760, 250);
+        jLabel2.setText("Nome/Titulo:");
+        jLabel3.setText("Descrição:");
 
-        jLabel2.setText("Nome/Titulo");
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(10, 20, 90, 18);
+        textAreaDescription.setLineWrap(true);
+        textAreaDescription.setWrapStyleWord(true);
 
-        jLabel3.setText("Descrição");
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(10, 70, 90, 18);
+        jMenuBar1.add(jMenu2);
 
-        jPanel1.add(fieldTittle);
-        fieldTittle.setBounds(110, 20, 650, 24);
 
-        textAreaDescription.setColumns(20);
-        textAreaDescription.setRows(5);
-        jScrollPane3.setViewportView(textAreaDescription);
-
-        jPanel1.add(jScrollPane3);
-        jScrollPane3.setBounds(110, 70, 274, 96);
 
         fileButton.setText("Arquivo");
-
-        jPanel1.add(fileButton);
-        fileButton.setBounds(400, 70, 100, 24);
-
         fileButtonUC.setText("Arquivo");
-        jPanel1.add(fileButtonUC);
-        fileButtonUC.setBounds(400, 140, 100, 24);
-        jPanel1.add(especificationField);
-        especificationField.setBounds(520, 70, 240, 24);
-        jPanel1.add(ucField);
-        ucField.setBounds(520, 140, 240, 24);
-
-        jPanel1.add(findFiend);
-        findFiend.setBounds(20, 250, 650, 24);
-
         findButton.setText("Buscar");
-        jPanel1.add(findButton);
-        findButton.setBounds(680, 250, 90, 24);
-
         jTextArea2.setColumns(20);
         jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
 
-        jPanel1.add(jScrollPane2);
-        jScrollPane2.setBounds(10, 240, 780, 310);
-
-        jLabel4.setText("Qualificação");
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(10, 200, 90, 20);
-
+        requisitos.setText("File");
+        jMenuBar1.add(requisitos);
+        jLabel4.setText("Qualificação:");
         saveButon.setText("Salvar");
-        jPanel1.add(saveButon);
-        saveButon.setBounds(670, 200, 90, 24);
-
-        functional.setText("Funcional");
-        jPanel1.add(functional);
-        functional.setBounds(100, 200, 110, 22);
-
+        functional.setText("Funcional");  
         notFunctionl.setText("Não Funcional");
-        jPanel1.add(notFunctionl);
-        notFunctionl.setBounds(260, 200, 140, 22);
-
         editButton.setText("Editar");
-        jPanel1.add(editButton);
-        editButton.setBounds(230, 560, 80, 24);
-
         removeButton.setText("Excluir");
-        jPanel1.add(removeButton);
-        removeButton.setBounds(370, 560, 90, 24);
-
         printButton.setText("Imprimir");
-        jPanel1.add(printButton);
-        printButton.setBounds(520, 560, 100, 24);
-
         jLabel5.setText("Anexar Desenho UC");
-        jPanel1.add(jLabel5);
-        jLabel5.setBounds(410, 120, 140, 18);
-
         jLabel6.setText("Anexar Especificação");
-        jPanel1.add(jLabel6);
-        jLabel6.setBounds(400, 50, 180, 18);
-
-        jLabel1.setIcon(new ImageIcon(getClass().getResource("/images/backend_opaco.png"))); // NOI18N
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, 0, 800, 600);
-
-        Requisitos.setText("File");
-        jMenuBar1.add(Requisitos);
-        Requisitos.getAccessibleContext().setAccessibleName("Requisitos");
-
         jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
-        jMenu2.getAccessibleContext().setAccessibleName("Test");
 
-        functional.setOpaque(false);
-        notFunctionl.setOpaque(false);
-
-        setJMenuBar(jMenuBar1);
-
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
-        );
-
-        pack();
     }
 
 }
