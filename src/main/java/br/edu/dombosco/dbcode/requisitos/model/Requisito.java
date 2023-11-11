@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "REQUIREMENT")
-public class RequisitoModel {
+public class Requisito {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
