@@ -45,15 +45,14 @@ public class BugRegisterView extends JPanel {
         txt_descricao_bug.setBounds(120, 70, 420, 70);
         lbl_passos_reproducao.setBounds(10, 150, 150, 25);
         txt_passos_reproducao.setBounds(170, 150, 370, 70);
-        lbl_classificacao_bug.setBounds(10, 230, 100, 25);
-        txt_classificacao_bug.setBounds(120, 230, 250, 25);
+        lbl_classificacao_bug.setBounds(10, 290, 100, 25);
+        txt_classificacao_bug.setBounds(120, 290, 250, 25);
         txt_filename.setBounds(120, 260, 250, 25);
         lbl_anexar_arquivo.setBounds(10, 260, 100, 25);
-        lbl_prioridade.setBounds(10, 290, 100, 25);
-        txt_prioridade.setBounds(120, 290, 250, 25);
+        lbl_prioridade.setBounds(10, 230, 100, 25);
+        txt_prioridade.setBounds(120, 230, 250, 25);
         btn_limpar_campos_bug.setBounds(120, 350, 100, 25);
-        btn_limpar_campos_bug.setBounds(120, 350, 100, 25);
-        bt_cadastrar_bug.setBounds(230, 350, 100, 25);
+        bt_cadastrar_bug.setBounds(230, 350, 110, 25);
 
         add(lbl_titulo_bug);
         add(txt_titulo_bug);
