@@ -39,8 +39,8 @@ public class BugRelatoryView extends JPanel {
         lbl_titulo.setBounds(330, 60, 140, 25);
         lbl_status.setBounds(235, 220, 80, 25);
         txt_status.setBounds(320, 220, 200, 25);
-        btn_relatorio_csv.setBounds(430, 330, 150, 25);
-        btn_mostrar_relatorio.setBounds(270, 330, 150, 25);
+        btn_relatorio_csv.setBounds(450, 330, 170, 25);
+        btn_mostrar_relatorio.setBounds(270, 330, 170, 25);
 
         add(lbl_titulo);
         add(lbl_status);
