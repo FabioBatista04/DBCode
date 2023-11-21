@@ -124,7 +124,7 @@ public class HomeView extends JFrame {
         });
     }
 
-    private void addPanel(JPanel panel) {
+    public void addPanel(JPanel panel) {
         getContentPane().removeAll();
         getContentPane().add(panel);
         getContentPane().revalidate();

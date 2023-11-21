@@ -100,10 +100,10 @@ public class RequisitoView extends JPanel {
         findFiend.setBounds(20, 250, 630, 24);
         findButton.setBounds(670, 250, 90, 24);
         jScrollPaneTable.setBounds(10, 240, 760, 310);
-        jLabel4.setBounds(10, 200, 90, 20);
+        jLabel4.setBounds(10, 200, 110, 20);
         saveButon.setBounds(670, 200, 90, 24);
-        functional.setBounds(100, 200, 110, 22);
-        notFunctionl.setBounds(260, 200, 140, 22);
+        functional.setBounds(100, 200, 130, 22);
+        notFunctionl.setBounds(260, 200, 160, 22);
         editButton.setBounds(230, 560, 80, 24);
         removeButton.setBounds(370, 560, 90, 24);
         printButton.setBounds(520, 560, 100, 24);
@@ -141,6 +141,7 @@ public class RequisitoView extends JPanel {
 
         findButton.addActionListener(e -> {
             if(findFiend.getText().isEmpty()){
+                clearTable();
                 initpopulateTable();
                 findFiend.setText("");
                 return;

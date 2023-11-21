@@ -29,8 +29,10 @@ public class ResetPassword extends JPanel {
     private final UserController userController;
 
     private User user = User.builder().build();
+    private LoginView loginView;
 
     public ResetPassword(LoginView loginView) {
+        this.loginView = loginView;
         this.emailController = loginView.getEmailController();
         this.userController = loginView.getUserController();
 
@@ -111,8 +113,7 @@ public class ResetPassword extends JPanel {
                         var userCreated = userController.update(user);
                         if(userCreated != null){
                             JOptionPane.showMessageDialog(this, "Registro efetuado com sucesso!");
-                            setVisible(false);
-                            loginView.setVisible(true);
+                            loginView.addPanel(loginView.getPanel());
                         }else {
                             String mensagem = "Erro ao atualizar senha";
                             JOptionPane.showMessageDialog(ResetPassword.this, mensagem,"Erro",JOptionPane.ERROR_MESSAGE);

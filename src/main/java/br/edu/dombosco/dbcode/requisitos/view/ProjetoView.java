@@ -113,6 +113,7 @@ public class ProjetoView extends JPanel {
         });
         buscarButton.addActionListener(e -> {
             if(campoBuscar.getText().isEmpty()){
+                clearTable();
                 initTableWithData();
                 campoBuscar.setText("");
                 return;
@@ -197,23 +198,23 @@ public class ProjetoView extends JPanel {
 
         textoTitulo.setText("Nome/Titulo:");
         add(textoTitulo);
-        textoTitulo.setBounds(40, 20, 71, 16);
+        textoTitulo.setBounds(40, 20, 80, 16);
 
         textoDescricao.setText("Descrição:");
         add(textoDescricao);
-        textoDescricao.setBounds(40, 60, 70, 16);
+        textoDescricao.setBounds(40, 60, 80, 16);
 
         TextoDataInicio.setText("Data Inicio:");
         add(TextoDataInicio);
-        TextoDataInicio.setBounds(40, 270, 70, 16);
+        TextoDataInicio.setBounds(40, 270, 80, 16);
 
         textoParticipantes.setText("Participantes:");
         add(textoParticipantes);
-        textoParticipantes.setBounds(40, 220, 90, 16);
+        textoParticipantes.setBounds(40, 220, 100, 16);
 
         textoDataFim.setText("Data Fim:");
         add(textoDataFim);
-        textoDataFim.setBounds(300, 270, 70, 16);
+        textoDataFim.setBounds(300, 270, 80, 16);
 
         textoEstimativa.setText("Estimativa em Horas:");
         add(textoEstimativa);
@@ -242,7 +243,7 @@ public class ProjetoView extends JPanel {
 
         });
         add(editarButton);
-        editarButton.setBounds(80, 550, 72, 23);
+        editarButton.setBounds(80, 550, 80, 23);
 
         deleteButon.setText("Excluir");
         add(deleteButon);
@@ -250,7 +251,7 @@ public class ProjetoView extends JPanel {
 
         SaveButton.setText("Salvar");
         add(SaveButton);
-        SaveButton.setBounds(420, 550, 72, 23);
+        SaveButton.setBounds(420, 550, 80, 23);
 
         tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
@@ -265,7 +266,7 @@ public class ProjetoView extends JPanel {
 
         selectButton.setText("Selecionar");
         add(selectButton);
-        selectButton.setBounds(630, 550, 100, 23);
+        selectButton.setBounds(630, 550, 120, 23);
         add(campoBuscar);
         campoBuscar.setBounds(160, 320, 580, 22);
 

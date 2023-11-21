@@ -129,8 +129,8 @@ public class RegisterView extends JPanel {
                     .build());
             if(userCreated.getFields().isEmpty()){
                 JOptionPane.showMessageDialog(this, "Registro efetuado com sucesso!");
-                setVisible(false);
-                this.loginView.setVisible(true);
+
+                this.loginView.addPanel(this.loginView.getPanel());
             }else {
                 String mensagem = "Por favor, verifique os seguintes campos: " + String.join(", ", userCreated.getFields());
                 JOptionPane.showMessageDialog(RegisterView.this, mensagem,"Valide Campos",JOptionPane.WARNING_MESSAGE);
