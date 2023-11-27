@@ -1,10 +1,20 @@
 version: '3'
 
 services:
+  app:
+    build: .
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DB: DBCode
+      MYSQL_PORT: 3306
+    depends_on:
+      - mysql
+
   mysql:
     image: mysql:8.0
     restart: always
-    container_name: mysql
     environment:
       MYSQL_DATABASE: DBCode
       MYSQL_ROOT_PASSWORD: root

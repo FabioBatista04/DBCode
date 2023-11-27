@@ -1,10 +1,13 @@
 package br.edu.dombosco.dbcode.bugs.model;
 
+import br.edu.dombosco.dbcode.requisitos.model.Projeto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +42,10 @@ public class Bug {
     private String prioridade;
     @Column(name = "DATA_CADASTRO", nullable = false)
     private LocalDate data_cadastro;
+
+    @ManyToOne
+    @JoinColumn(name = "PROJETO_ID", nullable = false)
+    private Projeto projeto;
 
     public boolean containsNullFields(){
         return this.titulo.isEmpty() || this.descricao.isEmpty() || this.reproducao.isEmpty();

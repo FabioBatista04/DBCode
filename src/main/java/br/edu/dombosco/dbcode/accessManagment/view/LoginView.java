@@ -6,6 +6,10 @@ import br.edu.dombosco.dbcode.accessManagment.controller.UserController;
 import br.edu.dombosco.dbcode.accessManagment.model.User;
 import br.edu.dombosco.dbcode.requisitos.controller.ProjetoController;
 import br.edu.dombosco.dbcode.requisitos.controller.RequisitosController;
+import br.edu.dombosco.dbcode.test.controller.CasoController;
+import br.edu.dombosco.dbcode.test.controller.CasoDetalhadoController;
+import br.edu.dombosco.dbcode.test.controller.CenarioController;
+import br.edu.dombosco.dbcode.test.controller.PlanoController;
 import lombok.Getter;
 import br.edu.dombosco.dbcode.bugs.controller.BugController;
 
@@ -33,15 +37,28 @@ public class LoginView extends JFrame {
     private RequisitosController requisitosController;
     private BugController bugController;
     private ProjetoController projetoController;
+    private PlanoController planoController;
+    private CenarioController cenarioController;
+    private CasoController casoController;
+    private CasoDetalhadoController casoDetalhadoController;
     private User user;
 
 
-    public LoginView(UserController userController, EmailController emailController, RequisitosController requisitosController, BugController bugController, ProjetoController projetoController) {
+    public LoginView(UserController userController, EmailController emailController,
+                     RequisitosController requisitosController, BugController bugController,
+                     ProjetoController projetoController, PlanoController planoController,
+                     CenarioController cenarioController, CasoController casoController,
+                     CasoDetalhadoController casoDetalhadoController
+    ) {
         this.requisitosController = requisitosController;
         this.userController = userController;
         this.emailController = emailController;
         this.bugController = bugController;
         this.projetoController = projetoController;
+        this.planoController = planoController;
+        this.cenarioController = cenarioController;
+        this.casoController = casoController;
+        this.casoDetalhadoController = casoDetalhadoController;
 
         initComponents();
         setLayoutLogin();
@@ -132,6 +149,7 @@ public class LoginView extends JFrame {
         forgetPassword.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+
                 addPanel(new ResetPassword(LoginView.this));
             }
         });
@@ -139,11 +157,12 @@ public class LoginView extends JFrame {
         singUp.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //setVisible(false);
                 addPanel(new RegisterView(LoginView.this));
             }
         });
     }
+
+
 
     public void addPanel(JPanel panel) {
         getContentPane().removeAll();

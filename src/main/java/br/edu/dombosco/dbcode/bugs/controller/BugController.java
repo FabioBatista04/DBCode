@@ -1,6 +1,7 @@
 package br.edu.dombosco.dbcode.bugs.controller;
 
 import br.edu.dombosco.dbcode.bugs.model.Bug;
+import br.edu.dombosco.dbcode.bugs.repository.BugDao;
 import br.edu.dombosco.dbcode.bugs.repository.BugRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -14,6 +15,7 @@ import java.util.List;
 public class BugController {
 
     private final BugRepository bugRepository;
+    private final BugDao bugDao;
 
     public Bug create(Bug bug){
         if(bug.containsNullFields()){
@@ -26,8 +28,8 @@ public class BugController {
         }
     }
 
-    public Bug query(Long id){
-        return this.bugRepository.findBugById(id);
+    public Bug query(Long id, Long projectId){
+        return bugDao.findByIdAndProjectId(id, projectId);
     }
 
     public List<Bug> listBugs(String status){
@@ -57,9 +59,10 @@ public class BugController {
             String reproducao,
             String file,
             String classificacao,
-            String prioridade)
+            String prioridade,
+            Long projetoId)
     {
-        Bug bug = this.query(id);
+        Bug bug = this.query(id, projetoId);
 
         if (bug != null){
             bug.setTitulo(titulo);
@@ -78,9 +81,10 @@ public class BugController {
     public void editStatusClassificacao(
             Long id,
             String status,
-            String classificacao)
+            String classificacao,
+            Long projetoId)
     {
-        Bug bug = this.query(id);
+        Bug bug = this.query(id, projetoId);
 
         if (bug != null){
             bug.setStatus(status);

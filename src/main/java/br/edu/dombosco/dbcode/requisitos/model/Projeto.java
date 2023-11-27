@@ -1,5 +1,7 @@
 package br.edu.dombosco.dbcode.requisitos.model;
 
+import br.edu.dombosco.dbcode.bugs.model.Bug;
+import br.edu.dombosco.dbcode.test.model.Plano;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,49 +9,61 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 @Data
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "PROJETO")
 public class Projeto {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "TITULO")
     private String titulo;
-    @Column(nullable = false)
+    @Column(name = "DESCRICAO")
     private String descricao;
-    @Column(nullable = false)
+    @Column(name = "PARTICIPANTES")
     private String parcipantes;
-    @Column(nullable = false)
+    @Column(name = "DATA_INICIO")
     private String datainicio;
-    @Column(nullable = false)
+    @Column(name = "DATA_FIM")
     private String datafim;
-    @Column(nullable = false)
+    @Column(name = "ESTIMATIVAS")
     private String estimativas;
 
-    public ArrayList<String> containsNullFields(){
-        ArrayList<String> fields = new ArrayList<>();
+    @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL)
+    private Set<Requisito> requisitos;
+
+    @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL)
+    private Set<Bug> bugs;
+
+    @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL)
+    private Set<Plano> planos;
+
+    public String containsNullFields(){
+        StringBuilder fields = new StringBuilder();
         if (titulo == null || titulo.isEmpty()){
-            fields.add("titulo");
+            fields.append("\ntitulo");
         }
         if (descricao == null || descricao.isEmpty()){
-            fields.add("descricao");
+            fields.append("\ndescricao");
         }
         if (parcipantes == null || parcipantes.isEmpty()){
-            fields.add("parcipantes");
+            fields.append("\nparcipantes");
         }
         if (datainicio == null || datainicio.isEmpty()){
-            fields.add("datainicio");
+            fields.append("\ndata de inicio");
         }
         if (datafim == null || datafim.isEmpty()){
-            fields.add("datafim");
+            fields.append("\ndata fim");
         }
         if (estimativas == null || estimativas.isEmpty()){
-            fields.add("estimativas");
+            fields.append("\nestimativas");
         }
-        return fields;
+        return fields.toString();
 
     }
 }

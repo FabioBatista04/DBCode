@@ -30,7 +30,7 @@ public class ProjetoController {
     }
 
     public List<Projeto> buscarPorTitulo(String text) {
-        return projetoRepository.findByTituloLike(text.concat("%"));
+        return projetoRepository.findByTituloLike("%"+text+"%");
     }
 
     public List<Projeto> buscar10Primeiros() {

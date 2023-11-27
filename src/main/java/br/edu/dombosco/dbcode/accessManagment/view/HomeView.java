@@ -5,8 +5,22 @@ import br.edu.dombosco.dbcode.bugs.view.BugRegisterView;
 import br.edu.dombosco.dbcode.bugs.view.BugRelatoryView;
 import br.edu.dombosco.dbcode.requisitos.controller.ProjetoController;
 import br.edu.dombosco.dbcode.requisitos.controller.RequisitosController;
+import br.edu.dombosco.dbcode.requisitos.model.Projeto;
 import br.edu.dombosco.dbcode.requisitos.view.ProjetoView;
 import br.edu.dombosco.dbcode.requisitos.view.RequisitoView;
+import br.edu.dombosco.dbcode.test.controller.CasoController;
+import br.edu.dombosco.dbcode.test.controller.CasoDetalhadoController;
+import br.edu.dombosco.dbcode.test.controller.CenarioController;
+import br.edu.dombosco.dbcode.test.controller.PlanoController;
+import br.edu.dombosco.dbcode.test.model.Caso;
+import br.edu.dombosco.dbcode.test.model.Cenario;
+import br.edu.dombosco.dbcode.test.model.Plano;
+import br.edu.dombosco.dbcode.test.view.CasoDetalhadoView;
+import br.edu.dombosco.dbcode.test.view.CasoTesteView;
+import br.edu.dombosco.dbcode.test.view.CenarioTesteView;
+import br.edu.dombosco.dbcode.test.view.PlanoTesteView;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import br.edu.dombosco.dbcode.bugs.controller.BugController;
@@ -18,6 +32,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @Slf4j
+@Getter
+@Setter
 public class HomeView extends JFrame {
 
 
@@ -25,9 +41,8 @@ public class HomeView extends JFrame {
 
     private JMenu home;
 
+    private JMenu projetos;
     private JMenu requisitos;
-    private JMenuItem subMenuRequisitos;
-    private JMenuItem subMenuRequisitosProjeto;
 
     private JMenu bugs;
     private JMenuItem subMenuBugCadastro;
@@ -36,12 +51,11 @@ public class HomeView extends JFrame {
 
 
     private JMenu test;
-    private JMenuItem subMenuTest;
-    private JMenuItem subMenutest2;
+    private JMenuItem subMenuPlanoTest;
+    private JMenuItem subMenuCenarioTest;
+    private JMenuItem subMenuCasoTest;
+    private JMenuItem subMenuCasoDetalhadoTest;
 
-    private JMenu config;
-    private JMenuItem subMenuConfig;
-    private JMenuItem subMenuConfig2;
 
     private JMenu exit;
 
@@ -52,29 +66,98 @@ public class HomeView extends JFrame {
     private RequisitosController requisitosController;
     private BugController bugController;
     private ProjetoController projetoController;
+    private PlanoController planoController;
+    private CenarioController cenarioController;
+    private CasoController casoController;
+    private CasoDetalhadoController casoDetalhadoController;
     private User user;
+    private Projeto projeto;
+    private Plano plano;
+    private Cenario cenario;
+    private Caso caso;
+
 
     public HomeView(LoginView loginView){
         this.requisitosController = loginView.getRequisitosController();
         this.bugController = loginView.getBugController();
         this.user = loginView.getUser();
         this.projetoController = loginView.getProjetoController();
+        this.planoController = loginView.getPlanoController();
+        this.cenarioController = loginView.getCenarioController();
+        this.casoController = loginView.getCasoController();
+        this.casoDetalhadoController = loginView.getCasoDetalhadoController();
 
         setLayoutHome();
         initComponents();
         configComponents();
 
+        setListenersTest();
         setListenersBugs();
         setListenersRequisitos();
         setListenersHome();
         setListenerPojetos();
+
+    }
+
+    private void setListenersTest() {
+        subMenuPlanoTest.addActionListener(e -> {
+            if(projeto == null){
+                JOptionPane.showMessageDialog(HomeView.this, "É necessário selecionar um projeto","Projeto não selecionado",JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            log.info("Plano Menu Item clicked");
+            addPanel(new PlanoTesteView(HomeView.this));
+        });
+        subMenuCenarioTest.addActionListener(e -> {
+            if(projeto == null){
+                JOptionPane.showMessageDialog(HomeView.this, "É necessário selecionar um projeto","Projeto não selecionado",JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if(plano == null){
+                JOptionPane.showMessageDialog(HomeView.this, "É necessário selecionar um Plano de Teste","Plano de Teste não selecionado",JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            log.info("Cenario Menu Item clicked");
+            addPanel(new CenarioTesteView(HomeView.this));
+        });
+        subMenuCasoTest.addActionListener(e -> {
+            if(projeto == null){
+                JOptionPane.showMessageDialog(HomeView.this, "É necessário selecionar um projeto","Projeto não selecionado",JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if(cenario == null){
+                JOptionPane.showMessageDialog(HomeView.this, "É necessário selecionar um Cenário de Teste","Cenário de Teste não selecionado",JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            log.info("Caso Menu Item clicked");
+            addPanel(new CasoTesteView(HomeView.this));
+        });
+        subMenuCasoDetalhadoTest.addActionListener(e -> {
+            if(projeto == null){
+                JOptionPane.showMessageDialog(HomeView.this, "É necessário selecionar um projeto","Projeto não selecionado",JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if(cenario == null){
+                JOptionPane.showMessageDialog(HomeView.this, "É necessário selecionar um Cenário de Teste","Cenário de Teste não selecionado",JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if(caso == null){
+                JOptionPane.showMessageDialog(HomeView.this, "É necessário selecionar um Caso de Teste","Caso de Teste não selecionado",JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            log.info("Caso Detalhado Menu Item clicked");
+            addPanel(new CasoDetalhadoView(HomeView.this));
+        });
     }
 
     private void setListenerPojetos() {
-        subMenuRequisitosProjeto.addActionListener(e -> {
+        projetos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
             log.info("Projeto Menu Item clicked");
-            addPanel(new ProjetoView(projetoController));
-        });
+            addPanel(new ProjetoView(HomeView.this));
+        }});
     }
 
     private void setListenersHome() {
@@ -101,24 +184,43 @@ public class HomeView extends JFrame {
     }
 
     private void setListenersRequisitos() {
-        subMenuRequisitos.addActionListener(e -> {
+        requisitos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if(projeto == null){
+                    JOptionPane.showMessageDialog(HomeView.this, "É necessário selecionar um projeto","Projeto não selecionado",JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
             log.info("Requisitos Menu Item clicked");
-            addPanel(new RequisitoView(requisitosController));
-        });
+            addPanel(new RequisitoView(HomeView.this));
+        }});
     }
 
     private void setListenersBugs() {
         subMenuBugCadastro.addActionListener(e -> {
+            if(projeto == null){
+                JOptionPane.showMessageDialog(HomeView.this, "É necessário selecionar um projeto","Projeto não selecionado",JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             log.info("Cadastro Menu Item clicked");
-            addPanel(new BugRegisterView(bugController));
+            addPanel(new BugRegisterView(HomeView.this));
         });
 
         subMenuBugConsulta.addActionListener(e -> {
+            if(projeto == null){
+                JOptionPane.showMessageDialog(HomeView.this, "É necessário selecionar um projeto","Projeto não selecionado",JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             log.info("Consulta Menu Item clicked");
-            addPanel(new BugQueryView(bugController, user));
+            addPanel(new BugQueryView(HomeView.this));
         });
 
         subMenuBugRelatorio.addActionListener(e -> {
+            if(projeto == null){
+                JOptionPane.showMessageDialog(HomeView.this, "É necessário selecionar um projeto","Projeto não selecionado",JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             log.info("Relatorio Menu Item clicked");
             addPanel(new BugRelatoryView(bugController));
         });
@@ -163,6 +265,7 @@ public class HomeView extends JFrame {
 
 
         menu.add(home);
+        menu.add(projetos);
         menu.add(requisitos);
         menu.add(bugs);
         menu.add(test);
@@ -175,14 +278,13 @@ public class HomeView extends JFrame {
         bugs.add(subMenuBugRelatorio);
 
 
-        test.add(subMenuTest);
-        test.add(subMenutest2);
+        test.add(subMenuPlanoTest);
+        test.add(subMenuCenarioTest);
+        test.add(subMenuCasoTest);
+        test.add(subMenuCasoDetalhadoTest);
 
         //config.add(subMenuConfig);
         //config.add(subMenuConfig2);
-
-        requisitos.add(subMenuRequisitos);
-        requisitos.add(subMenuRequisitosProjeto);
 
         setJMenuBar(menu);
         image.setIcon(imageIcon);
@@ -198,27 +300,35 @@ public class HomeView extends JFrame {
                         .addComponent(image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }
+    public void goToHome(){
+        log.info("Home Menu Item clicked");
+        getContentPane().removeAll();
+        getContentPane().revalidate();
+        getContentPane().repaint();
+        add(image);
+        image.setVisible(true);
+    }
 
     private void initComponents() {
 
         menu = new JMenuBar();
         home = new JMenu("Home");
+        projetos = new JMenu("Projetos");
         requisitos = new JMenu("Requisitos");
         bugs = new JMenu("Bugs");
         test = new JMenu("Test");
         //config = new JMenu("Configurações");
         exit = new JMenu("Sair");
 
-        subMenuRequisitos = new JMenuItem("Requisito");
-        subMenuRequisitosProjeto = new JMenuItem("Projeto");
-
 
         subMenuBugCadastro = new JMenuItem("Cadastro");
         subMenuBugConsulta = new JMenuItem("Consulta");
         subMenuBugRelatorio = new JMenuItem("Relatorio");
 
-        subMenuTest = new JMenuItem("Plano");
-        subMenutest2 = new JMenuItem("Caso");
+        subMenuPlanoTest = new JMenuItem("Plano");
+        subMenuCenarioTest = new JMenuItem("Cenario");
+        subMenuCasoTest = new JMenuItem("Caso");
+        subMenuCasoDetalhadoTest = new JMenuItem("Caso Detalhado");
 
 //        subMenuConfig = new JMenuItem("Cadastrar");
 //        subMenuConfig2 = new JMenuItem("Editar");
