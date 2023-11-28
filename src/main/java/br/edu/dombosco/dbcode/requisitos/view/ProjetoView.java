@@ -224,7 +224,7 @@ public class ProjetoView extends JPanel {
 
         textoTitulo.setText("Nome/Titulo:");
         add(textoTitulo);
-        textoTitulo.setBounds(40, 20, 80, 16);
+        textoTitulo.setBounds(40, 20, 100, 16);
 
         textoDescricao.setText("Descrição:");
         add(textoDescricao);
@@ -244,7 +244,7 @@ public class ProjetoView extends JPanel {
 
         textoEstimativa.setText("Estimativa em Horas:");
         add(textoEstimativa);
-        textoEstimativa.setBounds(490, 270, 150, 16);
+        textoEstimativa.setBounds(475, 270, 150, 16);
         add(campoTitulo);
         campoTitulo.setBounds(160, 20, 580, 22);
         add(campoParticipantes);
@@ -298,7 +298,7 @@ public class ProjetoView extends JPanel {
 
         buscarButton.setText("Buscar");
         add(buscarButton);
-        buscarButton.setBounds(40, 320, 80, 23);
+        buscarButton.setBounds(40, 320, 110, 23);
     }
 
 }

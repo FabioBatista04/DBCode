@@ -89,7 +89,7 @@ public class CenarioTesteView extends JPanel {
 
         StatusText.setText("Status do Cenario de Teste:");
         add(StatusText);
-        StatusText.setBounds(40, 220, 180, 20);
+        StatusText.setBounds(40, 220, 200, 20);
         add(findField);
         findField.setBounds(160, 290, 600, 22);
 
@@ -101,15 +101,15 @@ public class CenarioTesteView extends JPanel {
 
         nameText.setText("Nome do Cenario de Teste:");
         add(nameText);
-        nameText.setBounds(40, 50, 170, 16);
+        nameText.setBounds(40, 50, 200, 16);
 
         timeText.setText("Tempo do Cenario de Teste:");
         add(timeText);
-        timeText.setBounds(40, 130, 170, 16);
+        timeText.setBounds(40, 130, 200, 16);
 
         changeButton.setText("Alterar");
         add(changeButton);
-        changeButton.setBounds(210, 540, 80, 23);
+        changeButton.setBounds(210, 540, 110, 23);
         changeButton.addActionListener(e -> {
             if(isNotAutorized(homeView.getUser().getProfile())){
                 JOptionPane.showMessageDialog(null, "Você não tem permissão para alterar um cenário de teste", "Sem permissão", JOptionPane.ERROR_MESSAGE);
@@ -166,7 +166,7 @@ public class CenarioTesteView extends JPanel {
             }
         });
         add(selectButton);
-        selectButton.setBounds(660, 540, 100, 23);
+        selectButton.setBounds(650, 540, 110, 23);
 
         deleteButton.setText("Excluir");
         add(deleteButton);
@@ -191,7 +191,7 @@ public class CenarioTesteView extends JPanel {
 
         findButton.setText("Pesquisar");
         add(findButton);
-        findButton.setBounds(40, 290, 100, 23);
+        findButton.setBounds(40, 290, 110, 23);
         findButton.addActionListener(e -> {
             if(findField.getText().isEmpty()){
                 return;

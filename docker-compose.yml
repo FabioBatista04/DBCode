@@ -1,28 +1,35 @@
 version: '3'
 
 services:
-  app:
-    build: .
-    environment:
-      MYSQL_HOST: mysql
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_DB: DBCode
-      MYSQL_PORT: 3306
-    depends_on:
-      - mysql
-
-  mysql:
-    image: mysql:8.0
+  mysql_dbcode:
+    image: mysql:8
     restart: always
+    container_name: mysql_dbcode
     environment:
       MYSQL_DATABASE: DBCode
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: userDbcode
+      MYSQL_PASSWORD: DBCode
+      MYSQL_ROOT_PASSWORD: DBCode
     ports:
       - '3306:3306'
     expose:
       - '3306'
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+
+#  dbcode_app:
+#    container_name: dbcode_app
+#    image: dbcode
+#    ports:
+#      - '8080:8080'
+#    depends_on:
+#      - mysql_dbcode
+#    networks:
+#        - app-network
+networks:
+    app-network:
+        driver: bridge
 volumes:
   my-db:

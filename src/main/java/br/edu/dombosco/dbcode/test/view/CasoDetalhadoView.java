@@ -101,7 +101,7 @@ public class CasoDetalhadoView extends JPanel {
 
         changeButton.setText("Alterar");
         add(changeButton);
-        changeButton.setBounds(280, 560, 80, 23);
+        changeButton.setBounds(280, 560, 110, 23);
         changeButton.addActionListener(e -> {
             if(isNotAutorized(homeView.getUser().getProfile())){
                 JOptionPane.showMessageDialog(this, "Você não tem permissão para alterar", "Sem permissão", JOptionPane.ERROR_MESSAGE);
@@ -139,7 +139,7 @@ public class CasoDetalhadoView extends JPanel {
 
         findButton.setText("Pesquisar");
         add(findButton);
-        findButton.setBounds(40, 310, 100, 23);
+        findButton.setBounds(40, 310, 110, 23);
         findButton.addActionListener(e -> {
             if(findField.getText().isEmpty()){
                 return;
@@ -175,7 +175,7 @@ public class CasoDetalhadoView extends JPanel {
             }
         });
 
-        resultText.setText("Resultado Esperado");
+        resultText.setText("Resultado Esperado:");
         add(resultText);
         resultText.setBounds(450, 30, 170, 16);
 

@@ -49,25 +49,25 @@ public class BugQueryView extends JPanel {
 
     private void setupListeners(){
         lbl_id_bug.setBounds(10, 10, 100, 25);
-        txt_id_bug.setBounds(120, 10, 250, 25);
-        lbl_titulo_bug.setBounds(10, 50, 100, 25);
-        txt_titulo_bug.setBounds(120, 50, 250, 25);
-        lbl_status_bug.setBounds(10, 90, 100, 25);
-        txt_status_bug.setBounds(120, 90, 250, 25);
-        lbl_descricao_bug.setBounds(10, 130, 100, 25);
-        txt_descricao_bug.setBounds(120, 130, 420, 70);
-        lbl_passos_reproducao.setBounds(10, 220, 150, 25);
-        txt_passos_reproducao.setBounds(170, 220, 370, 70);
-        lbl_classificacao_bug.setBounds(10, 420, 100, 25);
-        txt_classificacao_bug.setBounds(120, 420, 250, 25);
-        txt_filename.setBounds(120, 350, 250, 25);
-        lbl_anexar_arquivo.setBounds(10, 350, 100, 25);
-        lbl_prioridade.setBounds(10, 320, 100, 25);
-        txt_prioridade.setBounds(120, 320, 250, 25);
-        lbl_data.setBounds(10, 390, 100, 25);
-        txt_data.setBounds(120, 390, 250, 25);
+        txt_id_bug.setBounds(230, 10, 250, 25);
+        lbl_titulo_bug.setBounds(10, 50, 210, 25);
+        txt_titulo_bug.setBounds(230, 50, 250, 25);
+        lbl_status_bug.setBounds(10, 90, 210, 25);
+        txt_status_bug.setBounds(230, 90, 250, 25);
+        lbl_descricao_bug.setBounds(10, 130, 210, 25);
+        txt_descricao_bug.setBounds(230, 130, 420, 70);
+        lbl_passos_reproducao.setBounds(10, 220, 210, 25);
+        txt_passos_reproducao.setBounds(230, 220, 370, 70);
+        lbl_classificacao_bug.setBounds(10, 420, 210, 25);
+        txt_classificacao_bug.setBounds(230, 420, 250, 25);
+        txt_filename.setBounds(230, 350, 250, 25);
+        lbl_anexar_arquivo.setBounds(10, 350, 210, 25);
+        lbl_prioridade.setBounds(10, 320, 210, 25);
+        txt_prioridade.setBounds(230, 320, 250, 25);
+        lbl_data.setBounds(10, 390, 210, 25);
+        txt_data.setBounds(230, 390, 250, 25);
         btn_deletar_bug.setBounds(230, 460, 100, 25);
-        btn_limpar_campos_bug.setBounds(120, 460, 100, 25);
+        btn_limpar_campos_bug.setBounds(580, 460, 100, 25);
         btn_consultar_bug.setBounds(460, 460, 110, 25);
         btn_editar_bug.setBounds(350, 460, 100, 25);
 

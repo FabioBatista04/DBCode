@@ -85,9 +85,9 @@ public class PlanoTesteView extends JPanel {
         add(jScrollPane1);
         jScrollPane1.setBounds(40, 330, 720, 180);
 
-        responsbilityText.setText("Responsavel de Inclusão");
+        responsbilityText.setText("Responsavel de Inclusão:");
         add(responsbilityText);
-        responsbilityText.setBounds(40, 220, 170, 16);
+        responsbilityText.setBounds(40, 220, 200, 16);
         add(findField);
         findField.setBounds(160, 290, 600, 22);
 
@@ -103,17 +103,17 @@ public class PlanoTesteView extends JPanel {
         add(responsabilityField);
         responsabilityField.setBounds(250, 220, 510, 22);
 
-        nameText.setText("Nome do Plano de Teste");
+        nameText.setText("Nome do Plano de Teste:");
         add(nameText);
-        nameText.setBounds(40, 50, 160, 16);
+        nameText.setBounds(40, 50, 200, 16);
 
-        dateText.setText("Data da Inclusão");
+        dateText.setText("Data da Inclusão:");
         add(dateText);
-        dateText.setBounds(40, 130, 130, 16);
+        dateText.setBounds(40, 130, 200, 16);
 
         changeButton.setText("Alterar");
         add(changeButton);
-        changeButton.setBounds(210, 540, 80, 23);
+        changeButton.setBounds(200, 540, 110, 23);
         changeButton.addActionListener(e -> {
             if(isNotAuthorized(homeView.getUser().getProfile())){
                 JOptionPane.showMessageDialog(this, "Você não tem permissão para alterar", "Sem permissão", JOptionPane.ERROR_MESSAGE);
@@ -179,7 +179,7 @@ public class PlanoTesteView extends JPanel {
             }
         });
         add(selectButton);
-        selectButton.setBounds(660, 540, 100, 23);
+        selectButton.setBounds(650, 540, 110, 23);
 
         deleteButton.setText("Excluir");
         add(deleteButton);
@@ -204,7 +204,7 @@ public class PlanoTesteView extends JPanel {
 
         findButton.setText("Pesquisar");
         add(findButton);
-        findButton.setBounds(40, 290, 100, 23);
+        findButton.setBounds(40, 290, 110, 23);
         findButton.addActionListener(e -> {
             if(findField.getText().isEmpty()){
                 return;

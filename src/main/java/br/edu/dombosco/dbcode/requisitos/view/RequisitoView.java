@@ -8,6 +8,7 @@ import br.edu.dombosco.dbcode.requisitos.model.Requisito;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.io.File;
 import java.io.FileWriter;
@@ -250,6 +251,9 @@ public class RequisitoView extends JPanel {
                 ucField.setText(selectedFile.getAbsolutePath());
             }
         });
+
+
+
 
         genereteCSVFileButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();

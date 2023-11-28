@@ -99,7 +99,7 @@ public class CasoTesteView extends JPanel {
 
         nameText.setText("Nome do Caso de Teste:");
         add(nameText);
-        nameText.setBounds(40, 30, 160, 16);
+        nameText.setBounds(40, 30, 200, 16);
 
         descriptionText.setText("Descricao: ");
         add(descriptionText);
@@ -107,7 +107,7 @@ public class CasoTesteView extends JPanel {
 
         changeButton.setText("Alterar");
         add(changeButton);
-        changeButton.setBounds(200, 540, 80, 23);
+        changeButton.setBounds(200, 540, 110, 23);
         changeButton.addActionListener(e -> {
             if(isNotAutorized(homeView.getUser().getProfile())){
                 JOptionPane.showMessageDialog(this, "Você não tem permissão para alterar um caso de teste");
@@ -148,7 +148,7 @@ public class CasoTesteView extends JPanel {
 
         findButton.setText("Pesquisar");
         add(findButton);
-        findButton.setBounds(40, 360, 100, 23);
+        findButton.setBounds(40, 360, 110, 23);
         findButton.addActionListener(e -> {
             if(findField.getText().isEmpty()){
                 return;
@@ -195,7 +195,7 @@ public class CasoTesteView extends JPanel {
         add(dificultField);
         dificultField.setBounds(490, 130, 170, 22);
 
-        preRequisitosText.setText("Pré-requisitos");
+        preRequisitosText.setText("Pré-requisitos:");
         add(preRequisitosText);
         preRequisitosText.setBounds(40, 110, 170, 16);
         add(preRequisitoField);
