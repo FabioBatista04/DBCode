@@ -1,12 +1,17 @@
 package br.edu.dombosco.dbcode.requisitos.view;
 
+import br.edu.dombosco.dbcode.accessManagment.model.Profile;
+import br.edu.dombosco.dbcode.accessManagment.model.User;
+import br.edu.dombosco.dbcode.accessManagment.view.HomeView;
 import br.edu.dombosco.dbcode.requisitos.controller.RequisitosController;
 import br.edu.dombosco.dbcode.requisitos.model.Requisito;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.io.File;
+import java.io.FileWriter;
 
 @Slf4j
 public class RequisitoView extends JPanel {
@@ -14,8 +19,8 @@ public class RequisitoView extends JPanel {
     private JTextField especificationField, fieldTittle, findFiend, ucField;
     private JRadioButton functional;
     private ButtonGroup funcionalGroup;
-    private JButton findButton,editButton, fileButton,fileButtonUC, printButton, removeButton,saveButon;
-    private JLabel jLabel2, jLabel3, jLabel4, jLabel5, jLabel6;
+    private JButton findButton,editButton, fileButton,fileButtonUC, genereteCSVFileButton, removeButton,saveButon;
+    private JLabel titleLabel, descriptionLabel, QualificationLabel, ucLabel, specificationLabel;
     private JMenuBar jMenuBar1;
     private JScrollPane jScrollPaneTableInternal, jScrollPaneTable, jScrollPane3;
     private JTable jTable1;
@@ -25,9 +30,11 @@ public class RequisitoView extends JPanel {
     private DefaultTableModel model;
     private RequisitosController requisitosController;
     private Long id;
+    private HomeView homeView;
 
-    public RequisitoView(RequisitosController requisitosController) {
-        this.requisitosController = requisitosController;
+    public RequisitoView(HomeView homeView) {
+        this.homeView = homeView;
+        this.requisitosController = homeView.getRequisitosController();
         initComponents();
         setPosition();
         addComponents();
@@ -37,7 +44,7 @@ public class RequisitoView extends JPanel {
     }
 
     private void initpopulateTable() {
-        var requisitos = requisitosController.buscar10Primeiros();
+        var requisitos = requisitosController.buscar10Primeiros(homeView.getProjeto());
         if(requisitos != null && !requisitos.isEmpty()){
             requisitos.forEach(this::populateTable);
         }
@@ -62,10 +69,12 @@ public class RequisitoView extends JPanel {
     private void addComponents(){
         funcionalGroup.add(functional);
         funcionalGroup.add(notFunctionl);
-        add(jLabel2);
+        add(titleLabel);
         add(fieldTittle);
-        add(jLabel3);
-        add(jLabel4);
+        add(descriptionLabel);
+        add(QualificationLabel);
+        add(ucLabel);
+        add(specificationLabel);
 
 
         add(fileButton);
@@ -79,7 +88,7 @@ public class RequisitoView extends JPanel {
         add(notFunctionl);
         add(editButton);
         add(removeButton);
-        add(printButton);
+        add(genereteCSVFileButton);
         add(jScrollPaneTableInternal);
         //add(textAreaDescription);
         add(jScrollPane3);
@@ -88,8 +97,8 @@ public class RequisitoView extends JPanel {
 
     private void setPosition() {
         jScrollPaneTableInternal.setBounds(20, 290, 740, 250);
-        jLabel2.setBounds(10, 20, 90, 18);
-        jLabel3.setBounds(10, 70, 90, 18);
+        titleLabel.setBounds(10, 20, 90, 18);
+        descriptionLabel.setBounds(10, 70, 90, 18);
         fieldTittle.setBounds(110, 20, 650, 24);
         jScrollPane3.setBounds(110, 70, 274, 96);
         textAreaDescription.setBounds(110, 70, 274, 96);
@@ -100,58 +109,65 @@ public class RequisitoView extends JPanel {
         findFiend.setBounds(20, 250, 630, 24);
         findButton.setBounds(670, 250, 90, 24);
         jScrollPaneTable.setBounds(10, 240, 760, 310);
-        jLabel4.setBounds(10, 200, 90, 20);
+        QualificationLabel.setBounds(10, 200, 110, 20);
         saveButon.setBounds(670, 200, 90, 24);
-        functional.setBounds(100, 200, 110, 22);
-        notFunctionl.setBounds(260, 200, 140, 22);
+        functional.setBounds(100, 200, 130, 22);
+        notFunctionl.setBounds(330, 200, 160, 22);
         editButton.setBounds(230, 560, 80, 24);
         removeButton.setBounds(370, 560, 90, 24);
-        printButton.setBounds(520, 560, 100, 24);
-        jLabel5.setBounds(410, 120, 140, 18);
-        jLabel6.setBounds(400, 50, 180, 18);
+        genereteCSVFileButton.setBounds(520, 560, 100, 24);
+        ucLabel.setBounds(400, 110, 140, 18);
+        specificationLabel.setBounds(400, 50, 180, 18);
 
     }
 
     private void setListeners() {
         saveButon.addActionListener(e -> {
-            var requisito = Requisito.builder()
-                    .id(id)
-                    .nome(fieldTittle.getText())
-                    .descricao(textAreaDescription.getText())
-                    .file_desenho(ucField.getText())
-                    .file_especificacao(especificationField.getText())
-                    .qualificacao(functional.isSelected() ? "Funcional" : "Não Funcional")
-                    .build();
+           if(isAutorizado(homeView.getUser())) {
+               var requisito = Requisito.builder()
+                       .id(id)
+                       .nome(fieldTittle.getText())
+                       .descricao(textAreaDescription.getText())
+                       .file_desenho(ucField.getText())
+                       .file_especificacao(especificationField.getText())
+                       .qualificacao(functional.isSelected() ? "Funcional" : "Não Funcional")
+                       .projeto(homeView.getProjeto())
+                       .build();
+               if (requisito.containsNullFields().isEmpty()) {
+                   try {
+                       var retorno = requisitosController.salvar(requisito);
+                       if (retorno != null) {
+                           clearTable();
+                           clearFields();
+                           addToTable(retorno);
+                       }
 
-            var retorno = requisitosController.salvar(requisito);
-            if(retorno != null){
-                clearTable();
-                model.addRow( new Object[]{
-                        retorno.getId(),
-                        retorno.getNome(),
-                        retorno.getQualificacao(),
-                        retorno.getDescricao(),
-                        retorno.getFile_especificacao(),
-                        retorno.getFile_desenho()
-                        }
-                );
-            }
-            clearFields();
+                   } catch (Exception ex) {
+                       JOptionPane.showMessageDialog(null, "Titulo já cadastrado!");
+                   }
+
+               } else {
+                   JOptionPane.showMessageDialog(null, "Preencha os campos:" + requisito.containsNullFields(), "Campos Obrigatórios", JOptionPane.WARNING_MESSAGE);
+               }
+           }else {
+               JOptionPane.showMessageDialog(null, "Você não tem permissão para salvar!");
+           }
         });
 
         findButton.addActionListener(e -> {
             if(findFiend.getText().isEmpty()){
+                clearTable();
                 initpopulateTable();
                 findFiend.setText("");
                 return;
             }
-            var requisitos = requisitosController.buscarPorTitulo(findFiend.getText());
+            var requisitos = requisitosController.buscarPorTitulo(findFiend.getText(), homeView.getProjeto().getId());
             if(requisitos != null && !requisitos.isEmpty()){
                 clearTable();
                 requisitos.forEach(this::populateTable);
             }else {
                 try {
-                    var requisito = requisitosController.findRequisitoModelById(Long.parseLong(findFiend.getText()));
+                    var requisito = requisitosController.findRequisitoModelById(Long.parseLong(findFiend.getText()), homeView.getProjeto().getId());
                     if(requisito != null){
                         clearTable();
                         populateTable(requisito);
@@ -165,45 +181,52 @@ public class RequisitoView extends JPanel {
         });
 
         editButton.addActionListener(e -> {
-            int selectedRow = jTable1.getSelectedRow();
-            if(selectedRow >= 0){
-                Long objectId = (Long) jTable1.getModel().getValueAt(selectedRow, 0);
-                var retorno = requisitosController.findRequisitoModelById(objectId);
-                if(retorno != null){
-                    clearTable();
-                    model.addRow( new Object[]{
-                                    retorno.getId(),
-                                    retorno.getNome(),
-                                    retorno.getQualificacao(),
-                                    retorno.getDescricao(),
-                                    retorno.getFile_especificacao(),
-                                    retorno.getFile_desenho()
-                            }
-                    );
-                    id = retorno.getId();
-                    fieldTittle.setText(retorno.getNome());
-                    textAreaDescription.setText(retorno.getDescricao());
-                    ucField.setText(retorno.getFile_desenho());
-                    especificationField.setText(retorno.getFile_especificacao());
-                    if (retorno.getQualificacao().equals("Funcional")) {
-                        functional.setSelected(true);
-                    } else {
-                        notFunctionl.setSelected(true);
+            if(isAutorizado(homeView.getUser())) {
+
+                int selectedRow = jTable1.getSelectedRow();
+                if (selectedRow >= 0) {
+                    Long objectId = (Long) jTable1.getModel().getValueAt(selectedRow, 0);
+                    var retorno = requisitosController.findRequisitoModelById(objectId, homeView.getProjeto().getId());
+                    if (retorno != null) {
+                        clearTable();
+                        model.addRow(new Object[]{
+                                        retorno.getId(),
+                                        retorno.getNome(),
+                                        retorno.getQualificacao(),
+                                        retorno.getDescricao(),
+                                        retorno.getFile_especificacao(),
+                                        retorno.getFile_desenho()
+                                }
+                        );
+                        id = retorno.getId();
+                        fieldTittle.setText(retorno.getNome());
+                        textAreaDescription.setText(retorno.getDescricao());
+                        ucField.setText(retorno.getFile_desenho());
+                        especificationField.setText(retorno.getFile_especificacao());
+                        if (retorno.getQualificacao().equals("Funcional")) {
+                            functional.setSelected(true);
+                        } else {
+                            notFunctionl.setSelected(true);
+                        }
+
                     }
-
                 }
+            }else {
+                JOptionPane.showMessageDialog(null, "Você não tem permissão para editar!");
             }
-
-
-
         });
 
         removeButton.addActionListener(e -> {
+            if(!isAutorizado(homeView.getUser())){
+                JOptionPane.showMessageDialog(null, "Você não tem permissão para excluir!");
+                return;
+            }
             int selectedRow = jTable1.getSelectedRow();
             if(selectedRow >= 0){
                 Long objectId = (Long) jTable1.getModel().getValueAt(selectedRow, 0);
                 requisitosController.delete(objectId);
-                clearTable();
+                removeElementFromTable(selectedRow);
+
             }
         });
 
@@ -228,6 +251,54 @@ public class RequisitoView extends JPanel {
                 ucField.setText(selectedFile.getAbsolutePath());
             }
         });
+
+
+
+
+        genereteCSVFileButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // Para selecionar apenas arquivos
+            int result = fileChooser.showOpenDialog(RequisitoView.this);
+
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                generateCSVFile(selectedFile.getAbsolutePath());
+            }
+        });
+    }
+
+    private void addToTable(Requisito retorno) {
+        model.addRow( new Object[]{
+                        retorno.getId(),
+                        retorno.getNome(),
+                        retorno.getQualificacao(),
+                        retorno.getDescricao(),
+                        retorno.getFile_especificacao(),
+                        retorno.getFile_desenho()
+                }
+        );
+    }
+
+    private void removeElementFromTable(int selectedRow) {
+        model.removeRow(selectedRow);
+    }
+
+    private void generateCSVFile(String absolutePath) {
+        try {
+            FileWriter writer = new FileWriter(absolutePath + "/requisitos.csv");
+            for (int i = 0; i < jTable1.getRowCount(); i++) {
+                // Escreve cada linha no arquivo CSV
+                for (int j = 0; j < jTable1.getColumnCount(); j++) {
+                    writer.write(jTable1.getValueAt(i, j).toString() + ",");
+                }
+                writer.write("\n");
+            }
+
+            // Fecha o fluxo de caracteres
+            writer.close();
+        }catch (Exception e){
+            log.error("Erro ao gerar arquivo CSV", e);
+        }
     }
 
     private void clearTable() {
@@ -249,8 +320,8 @@ public class RequisitoView extends JPanel {
         setSize(850, 650);
         setLayout(null);
 
-        jLabel2 = new JLabel();
-        jLabel3 = new JLabel();
+        titleLabel = new JLabel();
+        descriptionLabel = new JLabel();
         fieldTittle = new JTextField();
         textAreaDescription = new JTextArea();
         jScrollPane3 = new JScrollPane(textAreaDescription);
@@ -262,15 +333,15 @@ public class RequisitoView extends JPanel {
         findButton = new JButton();
         jScrollPaneTable = new JScrollPane();
         jTextArea2 = new JTextArea();
-        jLabel4 = new JLabel();
+        QualificationLabel = new JLabel();
         saveButon = new JButton();
         functional = new JRadioButton();
         notFunctionl = new JRadioButton();
         editButton = new JButton();
         removeButton = new JButton();
-        printButton = new JButton();
-        jLabel5 = new JLabel();
-        jLabel6 = new JLabel();
+        genereteCSVFileButton = new JButton();
+        ucLabel = new JLabel();
+        specificationLabel = new JLabel();
         jMenuBar1 = new JMenuBar();
         requisitos = new JMenu();
         jMenu2 = new JMenu();
@@ -286,8 +357,8 @@ public class RequisitoView extends JPanel {
 
         jScrollPaneTableInternal = new JScrollPane(jTable1);
 
-        jLabel2.setText("Nome/Titulo:");
-        jLabel3.setText("Descrição:");
+        titleLabel.setText("Nome/Titulo:");
+        descriptionLabel.setText("Descrição:");
 
         textAreaDescription.setLineWrap(true);
         textAreaDescription.setWrapStyleWord(true);
@@ -304,17 +375,19 @@ public class RequisitoView extends JPanel {
 
         requisitos.setText("File");
         jMenuBar1.add(requisitos);
-        jLabel4.setText("Qualificação:");
+        QualificationLabel.setText("Qualificação:");
         saveButon.setText("Salvar");
         functional.setText("Funcional");
         notFunctionl.setText("Não Funcional");
         editButton.setText("Editar");
         removeButton.setText("Excluir");
-        printButton.setText("Imprimir");
-        jLabel5.setText("Anexar Desenho UC");
-        jLabel6.setText("Anexar Especificação");
+        genereteCSVFileButton.setText("CSV");
+        ucLabel.setText("Anexar Desenho UC");
+        specificationLabel.setText("Anexar Especificação");
         jMenu2.setText("Edit");
 
     }
-
+    private boolean isAutorizado(User user) {
+       return user.getProfile().equals(Profile.ADMIN) || user.getProfile().equals(Profile.ANALYST);
+    }
 }

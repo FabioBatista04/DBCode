@@ -2,10 +2,6 @@ package br.edu.dombosco.dbcode.bugs.view;
 
 import br.edu.dombosco.dbcode.bugs.controller.BugController;
 import br.edu.dombosco.dbcode.bugs.model.Bug;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -39,8 +35,8 @@ public class BugRelatoryView extends JPanel {
         lbl_titulo.setBounds(330, 60, 140, 25);
         lbl_status.setBounds(235, 220, 80, 25);
         txt_status.setBounds(320, 220, 200, 25);
-        btn_relatorio_csv.setBounds(430, 330, 150, 25);
-        btn_mostrar_relatorio.setBounds(270, 330, 150, 25);
+        btn_relatorio_csv.setBounds(450, 330, 170, 25);
+        btn_mostrar_relatorio.setBounds(270, 330, 170, 25);
 
         add(lbl_titulo);
         add(lbl_status);
@@ -135,9 +131,7 @@ public class BugRelatoryView extends JPanel {
     }
 
     private void initComponents() {
-        //setTitle("Relatório de Bugs");
         setSize(800, 650);
-       // setLocationRelativeTo(null);
         setLayout(null);
 
         lbl_titulo = new JLabel("Relatório de Bugs");
@@ -152,7 +146,6 @@ public class BugRelatoryView extends JPanel {
 
         btn_relatorio_csv = new JButton("Relatório em CSV");
 
-        //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
 }

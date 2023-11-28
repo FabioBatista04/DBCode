@@ -1,10 +1,13 @@
 package br.edu.dombosco.dbcode.bugs.view;
 
+import br.edu.dombosco.dbcode.accessManagment.model.Profile;
 import br.edu.dombosco.dbcode.accessManagment.model.User;
+import br.edu.dombosco.dbcode.accessManagment.view.HomeView;
 import br.edu.dombosco.dbcode.bugs.controller.BugController;
 
 import javax.swing.*;
 
+import static br.edu.dombosco.dbcode.accessManagment.model.Profile.ADMIN;
 import static br.edu.dombosco.dbcode.accessManagment.model.Profile.DEV;
 import static br.edu.dombosco.dbcode.accessManagment.model.Profile.TEST;
 
@@ -31,43 +34,42 @@ public class BugQueryView extends JPanel {
     private JTextField txt_data;
     private JButton btn_deletar_bug;
     private JButton btn_editar_bug;
-
+    private HomeView homeView;
     private BugController bugController;
     private User user;
 
-    public BugQueryView(BugController bugController, User user) {
-        this.bugController = bugController;
-        this.user = user;
-        //setLocationRelativeTo(null);
+    public BugQueryView(HomeView homeView) {
+        this.bugController = homeView.getBugController();
+        this.user = homeView.getUser();
+        this.homeView = homeView;
+
         initComponents();
         setupListeners();
-
-       // setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     private void setupListeners(){
         lbl_id_bug.setBounds(10, 10, 100, 25);
-        txt_id_bug.setBounds(120, 10, 250, 25);
-        lbl_titulo_bug.setBounds(10, 50, 100, 25);
-        txt_titulo_bug.setBounds(120, 50, 250, 25);
-        lbl_status_bug.setBounds(10, 90, 100, 25);
-        txt_status_bug.setBounds(120, 90, 250, 25);
-        lbl_descricao_bug.setBounds(10, 130, 100, 25);
-        txt_descricao_bug.setBounds(120, 130, 420, 70);
-        lbl_passos_reproducao.setBounds(10, 220, 150, 25);
-        txt_passos_reproducao.setBounds(170, 220, 370, 70);
-        lbl_classificacao_bug.setBounds(10, 320, 100, 25);
-        txt_classificacao_bug.setBounds(120, 320, 250, 25);
-        txt_filename.setBounds(120, 350, 250, 25);
-        lbl_anexar_arquivo.setBounds(10, 350, 100, 25);
-        lbl_prioridade.setBounds(10, 420, 100, 25);
-        txt_prioridade.setBounds(120, 420, 250, 25);
-        lbl_data.setBounds(10, 390, 100, 25);
-        txt_data.setBounds(120, 390, 250, 25);
+        txt_id_bug.setBounds(230, 10, 250, 25);
+        lbl_titulo_bug.setBounds(10, 50, 210, 25);
+        txt_titulo_bug.setBounds(230, 50, 250, 25);
+        lbl_status_bug.setBounds(10, 90, 210, 25);
+        txt_status_bug.setBounds(230, 90, 250, 25);
+        lbl_descricao_bug.setBounds(10, 130, 210, 25);
+        txt_descricao_bug.setBounds(230, 130, 420, 70);
+        lbl_passos_reproducao.setBounds(10, 220, 210, 25);
+        txt_passos_reproducao.setBounds(230, 220, 370, 70);
+        lbl_classificacao_bug.setBounds(10, 420, 210, 25);
+        txt_classificacao_bug.setBounds(230, 420, 250, 25);
+        txt_filename.setBounds(230, 350, 250, 25);
+        lbl_anexar_arquivo.setBounds(10, 350, 210, 25);
+        lbl_prioridade.setBounds(10, 320, 210, 25);
+        txt_prioridade.setBounds(230, 320, 250, 25);
+        lbl_data.setBounds(10, 390, 210, 25);
+        txt_data.setBounds(230, 390, 250, 25);
         btn_deletar_bug.setBounds(230, 460, 100, 25);
-        btn_limpar_campos_bug.setBounds(120, 460, 100, 25);
-        btn_consultar_bug.setBounds(230, 460, 100, 25);
-        btn_editar_bug.setBounds(330, 460, 100, 25);
+        btn_limpar_campos_bug.setBounds(580, 460, 100, 25);
+        btn_consultar_bug.setBounds(460, 460, 110, 25);
+        btn_editar_bug.setBounds(350, 460, 100, 25);
 
         add(lbl_id_bug);
         add(txt_id_bug);
@@ -109,7 +111,7 @@ public class BugQueryView extends JPanel {
         // Consultar bug
         btn_consultar_bug.addActionListener(e -> {
             Long id = Long.parseLong(txt_id_bug.getText());
-            var bugQuery = bugController.query(id);
+            var bugQuery = bugController.query(id, homeView.getProjeto().getId());
 
             if(bugQuery != null){
                 txt_titulo_bug.setText(bugQuery.getTitulo());
@@ -128,13 +130,16 @@ public class BugQueryView extends JPanel {
 
         // Deletar
         btn_deletar_bug.addActionListener(e -> {
-
+            if(isNotAutorized(homeView.getUser().getProfile())){
+                JOptionPane.showMessageDialog(this, "Você não tem permissão para deletar bugs!");
+                return;
+            }
             if (txt_id_bug.getText().isEmpty()){
                 JOptionPane.showMessageDialog(this, "Informe o ID do bug!");
             }
             else{
                 Long id = Long.parseLong(txt_id_bug.getText());
-                var bugQuery = bugController.query(id);
+                var bugQuery = bugController.query(id, homeView.getProjeto().getId());
 
                 if(bugQuery != null){
                     txt_titulo_bug.setText(bugQuery.getTitulo());
@@ -169,11 +174,11 @@ public class BugQueryView extends JPanel {
             }
             else{
                 Long id = Long.parseLong(txt_id_bug.getText());
-                var bugQuery = bugController.query(id);
+                var bugQuery = bugController.query(id, homeView.getProjeto().getId());
 
                 if(bugQuery != null){
 
-                    if (bugQuery.getStatus().equals("Aberto") && user.getProfile() == TEST){
+                    if (bugQuery.getStatus().equals("Aberto") && user.getProfile() == TEST || user.getProfile().equals(ADMIN)){
                         String titulo = txt_titulo_bug.getText();
                         String status = (String) txt_status_bug.getSelectedItem();
                         String descricao = txt_descricao_bug.getText();
@@ -184,17 +189,17 @@ public class BugQueryView extends JPanel {
 
                         bugController.editBugAberto(
                                 id, titulo, status, descricao,
-                                reproducao, file, classificacao, prioridade);
+                                reproducao, file, classificacao, prioridade,homeView.getProjeto().getId());
 
                         JOptionPane.showMessageDialog(this, "Bug editado com sucesso!");
                         btn_limpar_campos_bug.doClick();
                     }
                     else if (!bugQuery.getStatus().equals("Aberto") &&
-                            (user.getProfile() == TEST || user.getProfile() == DEV)){
+                            (user.getProfile() == TEST || user.getProfile() == DEV || user.getProfile() == ADMIN)){
                         JOptionPane.showMessageDialog(this, "Você pode editar somente os campos 'status' e 'classificacao'");
                         String status = (String) txt_status_bug.getSelectedItem();
                         String classificacao = (String) txt_classificacao_bug.getSelectedItem();
-                        bugController.editStatusClassificacao(id, status, classificacao);
+                        bugController.editStatusClassificacao(id, status, classificacao, homeView.getProjeto().getId());
 
                         JOptionPane.showMessageDialog(this, "Bug editado com sucesso!");
                         btn_limpar_campos_bug.doClick();
@@ -210,10 +215,12 @@ public class BugQueryView extends JPanel {
         });
     }
 
+    private boolean isNotAutorized(Profile profile) {
+        return profile != Profile.ADMIN && profile != TEST && profile != DEV;
+    }
+
     private void initComponents() {
-        //setTitle("Consulta de Bug");
         setSize(800, 650);
-        //setLocationRelativeTo(null);
         setLayout(null);
 
         lbl_id_bug = new JLabel("Id do Bug:");
@@ -253,8 +260,6 @@ public class BugQueryView extends JPanel {
         btn_limpar_campos_bug = new JButton("Limpar");
         btn_deletar_bug = new JButton("Excluir");
         btn_editar_bug = new JButton("Editar");
-
-        //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
 }

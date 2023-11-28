@@ -1,5 +1,7 @@
 package br.edu.dombosco.dbcode.bugs.view;
 
+import br.edu.dombosco.dbcode.accessManagment.model.Profile;
+import br.edu.dombosco.dbcode.accessManagment.view.HomeView;
 import br.edu.dombosco.dbcode.bugs.controller.BugController;
 import br.edu.dombosco.dbcode.bugs.model.Bug;
 
@@ -25,35 +27,35 @@ public class BugRegisterView extends JPanel {
     private JComboBox<String> txt_prioridade;
 
     private BugController bugController;
+    private HomeView homeView;
 
-    public BugRegisterView(BugController bugController) {
-        this.bugController = bugController;
-        //setLocationRelativeTo(null);
+    public BugRegisterView(HomeView homeView) {
+        this.homeView = homeView;
+        this.bugController = homeView.getBugController();
+
         initComponents();
         setupListeners();
-
-        //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
 
     private void setupListeners() {
         lbl_titulo_bug.setBounds(10, 10, 100, 25);
-        txt_titulo_bug.setBounds(120, 10, 250, 25);
+        txt_titulo_bug.setBounds(240, 10, 250, 25);
         lbl_status_bug.setBounds(10, 40, 100, 25);
-        txt_status_bug.setBounds(120, 40, 250, 25);
+        txt_status_bug.setBounds(240, 40, 250, 25);
         lbl_descricao_bug.setBounds(10, 70, 100, 25);
-        txt_descricao_bug.setBounds(120, 70, 420, 70);
-        lbl_passos_reproducao.setBounds(10, 150, 150, 25);
-        txt_passos_reproducao.setBounds(170, 150, 370, 70);
-        lbl_classificacao_bug.setBounds(10, 230, 100, 25);
-        txt_classificacao_bug.setBounds(120, 230, 250, 25);
-        txt_filename.setBounds(120, 260, 250, 25);
-        lbl_anexar_arquivo.setBounds(10, 260, 100, 25);
-        lbl_prioridade.setBounds(10, 290, 100, 25);
-        txt_prioridade.setBounds(120, 290, 250, 25);
-        btn_limpar_campos_bug.setBounds(120, 350, 100, 25);
-        btn_limpar_campos_bug.setBounds(120, 350, 100, 25);
-        bt_cadastrar_bug.setBounds(230, 350, 100, 25);
+        txt_descricao_bug.setBounds(240, 70, 420, 70);
+        lbl_passos_reproducao.setBounds(10, 150, 210, 25);
+        txt_passos_reproducao.setBounds(240, 150, 370, 70);
+        lbl_classificacao_bug.setBounds(10, 290, 100, 25);
+        txt_classificacao_bug.setBounds(240, 290, 250, 25);
+        txt_filename.setBounds(240, 260, 250, 25);
+        lbl_anexar_arquivo.setBounds(10, 260, 180, 25);
+        lbl_prioridade.setBounds(10, 230, 180, 25);
+        txt_prioridade.setBounds(240, 230, 250, 25);
+        btn_limpar_campos_bug.setBounds(240, 350, 100, 25);
+        btn_limpar_campos_bug.setBounds(240, 350, 100, 25);
+        bt_cadastrar_bug.setBounds(380, 350, 110, 25);
 
         add(lbl_titulo_bug);
         add(txt_titulo_bug);
@@ -74,6 +76,10 @@ public class BugRegisterView extends JPanel {
 
         // Cadastrar Bug
         bt_cadastrar_bug.addActionListener(e -> {
+            if(isNotAutorized(homeView.getUser().getProfile())){
+                JOptionPane.showMessageDialog(this, "Você não tem permissão para cadastrar bugs!");
+                return;
+            }
             String titulo = txt_titulo_bug.getText();
             String status = (String) txt_status_bug.getSelectedItem();
             String descricao = txt_descricao_bug.getText();
@@ -81,7 +87,7 @@ public class BugRegisterView extends JPanel {
             String classificacao = (String) txt_classificacao_bug.getSelectedItem();
             String prioridade = (String) txt_prioridade.getSelectedItem();
             String filename;
-            if (txt_filename.getText().equals("Escolher arquivo...")){
+            if (txt_filename.getText() == null || txt_filename.getText().isEmpty() || txt_filename.getText().equals("Escolher arquivo...")){
                 filename = "";
             }
             else{
@@ -97,6 +103,7 @@ public class BugRegisterView extends JPanel {
                     .classificacao(classificacao)
                     .prioridade(prioridade)
                     .data_cadastro(LocalDate.now())
+                    .projeto(homeView.getProjeto())
                     .build());
             if(bugCreated != null){
                 JOptionPane.showMessageDialog(this, "Bug cadastrado com sucesso!");
@@ -130,10 +137,13 @@ public class BugRegisterView extends JPanel {
         });
     }
 
+    private boolean isNotAutorized(Profile profile) {
+        System.out.println(profile);
+        return profile != Profile.ADMIN && profile != Profile.DEV && profile != Profile.TEST;
+    }
+
     private void initComponents() {
-        //setTitle("Cadastro de Bug");
         setSize(800, 650);
-        //setLocationRelativeTo(null);
         setLayout(null);
 
         lbl_titulo_bug = new JLabel("Título do Bug:");
@@ -168,8 +178,6 @@ public class BugRegisterView extends JPanel {
 
         btn_limpar_campos_bug = new JButton("Limpar");
 
-        //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setVisible(true);
     }
 
 }
